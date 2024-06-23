@@ -88,7 +88,7 @@ function Main() {
       >
         <div className={`bg-[#1f2937] text-white p-8 rounded-lg`}>
           <div className=" animate-bounce rounded-full h-32 w-32 border-2 border-[#dc7000 ">
-            <img src="logo.png" className="rounded-full" alt="" />
+            <img src="userlogo.png" className="rounded-full" alt="" />
           </div>
           <div className=" text-white animate-pulse mt-4 text-2xl font-semibold">
             <span> Loading...</span>
@@ -103,8 +103,8 @@ function Main() {
       <div className="flex items-center z-50 w-full justify-between px-6 space-x-2 mt-4">
         <div className="flex justify-center items-center gap-2">
           <img
-            className="bg-black rounded-full  w-10 grayscale h-10"
-            src="user.png"
+            className="bg-black rounded-full  w-10  h-10"
+            src="userlogo.png"
           ></img>
           <div>
             <div className=" text-base font-semibold">OtGalaxy_Dev</div>

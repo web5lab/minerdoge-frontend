@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.cs-shadow {
+    box-shadow: 0px -25px 36px 0px rgba(242, 158, 1, 0.4);
+}
+
+.cs-loader{
+    background: rgb(243,177,91);
+background: linear-gradient(90deg, rgba(243,177,91,1) 23%, rgba(106,243,91,1) 49%, rgba(91,114,243,1) 91%);
+}
+
+.cs-text{
+    font-size: 2.5rem/* 48px */;
+    line-height: 1;
+}
+
+.cs-text-2 {
+    font-size: 0.7rem/* 12px */;
+    /* line-height: 1rem16px; */
+}
+
+.max-h-minus-60 {
+    max-height: calc(100vh - 60px);
+  }

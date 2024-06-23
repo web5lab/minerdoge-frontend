@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "https://api.otgalaxy.com/",
+  baseURL: "http://localhost:3137/",
 });
 
 axiosInstance.interceptors.response.use(

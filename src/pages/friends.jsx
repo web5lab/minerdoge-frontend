@@ -5,6 +5,13 @@ import { FaRegCopy } from "react-icons/fa";
 const networks = [1, 2, 3];
 
 function Friends() {
+  const handleButtonClick = () => {
+    const message = "https://t.me/hamster_Kombat_bot/start?startapp=kentId5281683183\n\nPlay with me, become cryptoexchange CEO and get a token airdrop!\n💸  2k Coins as a first-time gift\n🔥  25k Coins if you have Telegram Premium";
+    const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent(message)}`;
+
+    window.open(telegramShareUrl, "_blank");
+  };
+
   return (
     <div className="w-full h-full max-h-minus-60 flex px-4 flex-col items-center justify-center">
       <h1 className=" font-bold text-3xl mt-8">0 Friends</h1>
@@ -36,7 +43,7 @@ function Friends() {
         <h1 className=" font-bold text-xl">Open Details</h1>
       </div>
       <div className="flex my-4 justify-center items-center gap-2 w-full">
-        <button className="w-full bg-white rounded-full flex text-black font-extrabold justify-center items-center  h-12">
+        <button onClick={handleButtonClick} className="w-full bg-white rounded-full flex text-black font-extrabold justify-center items-center  h-12">
           Invite Friend
         </button>
         <button className="bg-white rounded-full flex justify-center items-center w-14 h-12">

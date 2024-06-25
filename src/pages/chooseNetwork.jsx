@@ -4,9 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { networkSelector } from "../selector/globalSelector";
 import { getNetwork } from "../App/features/gameAction";
 
-const networks = [
-  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
-];
+
 
 function ChooseNetwork() {
   const dispatch = useDispatch();
@@ -27,7 +25,7 @@ function ChooseNetwork() {
             >
               <img
                 src={data?.logo}
-                className="w-8   rounded-full  bg-gray-800 "
+                className="w-8 h-8   rounded-full  bg-gray-800 "
                 alt="Diamond"
               />
               <span className="mr-auto">{data?.tittle}</span>

@@ -6,6 +6,8 @@ import ChooseNetwork from "./pages/chooseNetwork";
 import Task from "./pages/task";
 import Boost from "./pages/boost";
 import Mine from "./pages/mine";
+import RanksPage from "./pages/ranksPage";
+import RefralRewards from "./pages/refralRewards";
 
 export const router = createBrowserRouter([
   {
@@ -35,6 +37,14 @@ export const router = createBrowserRouter([
       {
         path: "Mine",
         element: <Mine />,
+      },
+      {
+        path: "leaderboard",
+        element: <RanksPage />,
+      },
+      {
+        path: "refralrewards",
+        element: <RefralRewards />,
       }
     ],
   },

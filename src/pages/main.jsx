@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PiGameControllerFill } from "react-icons/pi";
 import { FaUserFriends } from "react-icons/fa";
@@ -11,31 +11,80 @@ import { useNavigate } from "react-router-dom";
 import { formatNumber } from "../utils";
 import DailyReward from "../component/DailyReward";
 import MinersNotification from "../component/MinersNotification";
-
+import { useDispatch, useSelector } from "react-redux";
+import { addClicks, loginApi } from "../App/features/gameAction";
+import { FaChevronRight } from "react-icons/fa";
+import {
+  coinSelector,
+  miningRateSelector,
+  RankSelector,
+  userSelector,
+} from "../selector/globalSelector";
+import { changeCoin } from "../App/features/gameSlice";
 
 function Main() {
   const [points, setPoints] = useState([]);
   const [ripples, setRipples] = useState([]);
   const [isPushed, setIsPushed] = useState(false);
-  const [currency, setcurrency] = useState(9999);
-  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
+  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(true);
+  const [count, setCount] = useState(0);
+  const [timeoutId, setTimeoutId] = useState(null);
   const navigation = useNavigate();
+  const dispatch = useDispatch();
+  const user = useSelector(userSelector);
+  const coin = useSelector(coinSelector);
+  const miningRate = useSelector(miningRateSelector);
+  const rank = useSelector(RankSelector);
 
   const openBottomSheet = () => {
     setIsBottomSheetOpen(true);
   };
 
+  useEffect(() => {
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [timeoutId]);
+
   const closeBottomSheet = () => {
     setIsBottomSheetOpen(false);
   };
 
+  const clickApiCaller = () => {
+    setCount(count + 1);
+
+    // Clear the previous timeout if it exists
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+
+    // Set a new timeout
+    const newTimeoutId = setTimeout(() => {
+      console.log("total clicks", count);
+      const obj = {
+        tgData:
+          "user=%7B%22id%22%3A5281683183%2C%22first_name%22%3A%22OtGalaxy%20Dev%22%2C%22last_name%22%3A%22%22%2C%22username%22%3A%22OtGalaxy_Dev%22%2C%22language_code%22%3A%22en%22%2C%22allows_write_to_pm%22%3Atrue%7D&chat_instance=-4195278687679847124&chat_type=supergroup&auth_date=1719115920&hash=788f8150e3f54b36d6218c32723011811d8213efb63b5ce375a77ce1ebde17a7",
+        clicks: count + 1,
+      };
+      dispatch(addClicks(obj));
+      setCount(0);
+      console.log("No clicks for 1 seconds");
+    }, 1500);
+
+    setTimeoutId(newTimeoutId);
+  };
+
   const handleClick = (e) => {
+    clickApiCaller();
     setIsPushed(true);
     const button = e.currentTarget;
     const rect = button.getBoundingClientRect();
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-    setcurrency(currency + 2);
+
+    dispatch(changeCoin(user?.earnPerclicks));
     const newRipple = {
       id: Date.now(),
       x: centerX,
@@ -50,7 +99,6 @@ function Main() {
       startY: e.clientY,
     };
 
-    console.log("n", newPoint);
     setPoints((prevPoints) => [...prevPoints, newPoint]);
 
     setRipples((prevRipples) => [...prevRipples, newRipple]);
@@ -72,31 +120,6 @@ function Main() {
       setIsPushed(false);
     }, 100);
   };
-
-  useLayoutEffect(() => {
-    let token = window?.Telegram?.WebApp?.initDataUnsafe?.start_param;
-    console.log("data from telegram", window?.Telegram);
-  }, []);
-
-  let tokenData = "abd";
-
-  if (tokenData === "abc") {
-    return (
-      <div
-        className={`w-full h-screen flex justify-center items-center `}
-        style={{ backgroundColor: `#1f2937` }}
-      >
-        <div className={`bg-[#1f2937] text-white p-8 rounded-lg`}>
-          <div className=" animate-bounce rounded-full h-32 w-32 border-2 border-[#dc7000 ">
-            <img src="userlogo.png" className="rounded-full" alt="" />
-          </div>
-          <div className=" text-white animate-pulse mt-4 text-2xl font-semibold">
-            <span> Loading...</span>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="flex flex-col  h-full shadow-inner  justify-between items-center flex-grow">
@@ -134,44 +157,50 @@ function Main() {
                 className="w-4 h-4  rounded-full "
                 alt="Diamond"
               />
-              <span>+2</span>
+              <span className="font-bold text-yellow-400">+{user?.earnPerclicks}</span>
             </div>
           </button>
           <button className=" rounded-lg bg-gray-700">
             <span className=" text-xs text-[#6af35b]">For Level Up</span>
             <div className="flex gap-1 justify-center items-center">
-            <img
+              <img
                 src="hashcoin.jpeg"
                 className="w-4 h-4  rounded-full "
                 alt="Diamond"
               />
-              <span>+2</span>
+
+              <span className="font-bold text-yellow-400">+{formatNumber(rank[user?.currentRank[0]?.id]?.requiredAmount)}</span>
             </div>
           </button>
           <button className=" rounded-lg bg-gray-700" onClick={openBottomSheet}>
             <span className=" text-xs text-[#5b72f3]">Mining per hour</span>
             <div className="flex gap-1 justify-center items-center">
-            <img
+              <img
                 src="hashcoin.jpeg"
                 className="w-4 h-4  rounded-full "
                 alt="Diamond"
               />
-              <span>+2</span>
+              <span className="font-bold text-yellow-400">+{formatNumber(miningRate)}</span>
             </div>
           </button>
         </div>
 
-        <div className="flex justify-center mt-2 gap-2  items-center">
-        <img
-                src="tcoin.png"
-                className="w-12 h-12 bg-white  rounded-full "
-                alt="Diamond"
-              />
-          <div className=" cs-text font-bold">{formatNumber(currency)}</div>
+        <div className="flex justify-center  gap-2  items-center">
+          <img
+            src="tcoin.png"
+            className="w-12 h-12 bg-white  rounded-full "
+            alt="Diamond"
+          />
+          <div className=" cs-text font-bold">
+            {Math.floor(Number(coin)).toLocaleString()}
+          </div>
         </div>
-        <div>
+        <div onClick={() => {
+          navigation("/leaderboard")
+        }}>
           <div className="mx-4 flex justify-between text-xs items-center">
             <span className="text-yellow-400">Gold</span>
+            <FaChevronRight className="mr-auto ml-2" />
             <div>
               <span className="text-gray-300 mr-1">Rank</span>
               <span>1/10</span>
@@ -255,8 +284,8 @@ function Main() {
         </div>
       </div>
       <BottomSheet isOpen={isBottomSheetOpen} onClose={closeBottomSheet}>
-        {/* <DailyReward/> */}
-        <MinersNotification/>
+        <DailyReward />
+        {/* <MinersNotification/> */}
       </BottomSheet>
     </div>
   );

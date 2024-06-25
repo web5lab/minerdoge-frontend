@@ -10,10 +10,10 @@ const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
 
 root.render(
-  <StrictMode>
+
     <Provider store={store}>
       <App />
       <Toaster position="right-top" />
     </Provider>
-  </StrictMode>
+
 );

@@ -13,7 +13,21 @@ root.render(
 
     <Provider store={store}>
       <App />
-      <Toaster position="right-top" />
+      <Toaster position="right-top" toastOptions={{
+
+    style: {
+      border: '1px solid #ffffff',
+      padding: '6px',
+      backgroundColor:"#232323",
+      color: '#facc15',
+      fontSize:'12px'
+    },
+    success: {
+      iconTheme: {
+        primary: 'white',
+        secondary: 'black',
+      }}
+  }} />
     </Provider>
 
 );

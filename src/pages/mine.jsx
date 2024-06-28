@@ -2,13 +2,15 @@ import React, { useEffect } from "react";
 import { FaAnglesRight } from "react-icons/fa6";
 import { getMiningCards } from "../App/features/gameAction";
 import { useDispatch, useSelector } from "react-redux";
-import { coinSelector, miningCardSelector, miningRateSelector } from "../selector/globalSelector";
+import {
+  coinSelector,
+  miningCardSelector,
+  miningRateSelector,
+  userSelector,
+} from "../selector/globalSelector";
 import { formatNumber } from "../utils";
 
-const networks = [1, 2, 3, 4, 5];
-
 function Mine() {
-
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getMiningCards());
@@ -17,6 +19,7 @@ function Mine() {
   const card = useSelector(miningCardSelector);
   const coin = useSelector(coinSelector);
   const miningRate = useSelector(miningRateSelector);
+  const user = useSelector(userSelector);
 
   return (
     <div className="w-full h-full max-h-minus-60 flex px-4 flex-col items-center justify-center">
@@ -26,7 +29,9 @@ function Mine() {
           className="w-14 h-14  rounded-full "
           alt="Diamond"
         />
-        <span className=" text-4xl font-extrabold">{Math.floor(Number(coin)).toLocaleString()}</span>
+        <span className=" text-4xl font-extrabold">
+          {Math.floor(Number(coin)).toLocaleString()}
+        </span>
       </div>
       <div className="flex mt-1 mb-6 justify-center px-4 gap-1 items-center">
         <span className="text-xs">Earning per hour</span>
@@ -35,7 +40,9 @@ function Mine() {
           className="w-4 h-4  rounded-full "
           alt="Diamond"
         />
-        <span className=" text-xs font-extrabold text-green-400">+{formatNumber(miningRate)}</span>
+        <span className=" text-xs font-extrabold text-green-400">
+          +{formatNumber(miningRate)}
+        </span>
       </div>
       <div className=" text-xs bg-gray-700  rounded-md p-2 w-full grid grid-cols-3">
         <button className=" hover:bg-gray-800 p-1 rounded-md">Upgrades</button>

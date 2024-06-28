@@ -4,8 +4,9 @@ import "./tailwind.css";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { userSelector } from "./selector/globalSelector";
-import { getRanks, loginApi } from "./App/features/gameAction";
+import { getNetwork, getRanks, loginApi } from "./App/features/gameAction";
 import MainApp from "./mainApp";
+import { BottomSheet } from "react-spring-bottom-sheet";
 
 export default function App() {
   const dispatch = useDispatch();
@@ -21,6 +22,7 @@ export default function App() {
     };
     dispatch(loginApi(obj));
     dispatch(getRanks())
+    dispatch(getNetwork());
   }, [dispatch]);
 
   console.log("App rendered", { user });
@@ -44,6 +46,7 @@ export default function App() {
           </div>
         </div>
       )}
+     
     </>
   );
 }

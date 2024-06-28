@@ -57,3 +57,18 @@ export const boosterSelector = createSelector(
   [gameSelector],
   (game) => game.booster
 )
+
+export const bottomStatusSelector = createSelector(
+  [gameSelector],
+  (game) => game.bottomSheetEnabled
+)
+
+export const bottomSheetSelector = createSelector(
+  [gameSelector],
+  (game) => game.bottomSheet
+)
+
+export const rechargeSelector = createSelector(
+  [gameSelector],
+  (game) => game.rechargePoint
+)

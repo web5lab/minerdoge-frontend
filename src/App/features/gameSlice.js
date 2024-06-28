@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
+  changeNetworkApi,
+  completeTaskApi,
   getBoosters,
   getDailyReward,
   getFriends,
@@ -15,12 +17,15 @@ const initialState = {
   miningCards: [],
   task: [],
   rank: [],
-  booster:[],
+  booster: [],
   dailyRewards: [],
   notification: [],
-  miningRate:0,
-  friends:[],
+  miningRate: 0,
+  friends: [],
   coins: 0,
+  rechargePoint:0,
+  bottomSheet: null,
+  bottomSheetEnabled: false,
   user: null,
 };
 
@@ -31,6 +36,17 @@ const gameController = createSlice({
     changeCoin: (state, action) => {
       state.coins = state.coins + action.payload;
     },
+    changeRecharge: (state, action) => {
+      state.rechargePoint = state.rechargePoint + action.payload;
+    },
+    openBottomSheet: (state, action) => {
+      state.bottomSheet = action.payload;
+      state.bottomSheetEnabled = true;
+    },
+    closeBottomSheet: (state, action) => {
+      state.bottomSheetEnabled = false;
+      state.bottomSheet = null;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -38,6 +54,12 @@ const gameController = createSlice({
       .addCase(getNetwork.rejected, (state, action) => {})
       .addCase(getNetwork.fulfilled, (state, action) => {
         state.networks = action.payload?.networks;
+      });
+    builder
+      .addCase(changeNetworkApi.pending, (state) => {})
+      .addCase(changeNetworkApi.rejected, (state, action) => {})
+      .addCase(changeNetworkApi.fulfilled, (state, action) => {
+        state.user.currentNetwork = action.payload?.data;
       });
     builder
       .addCase(getMiningCards.pending, (state) => {})
@@ -76,16 +98,24 @@ const gameController = createSlice({
         state.booster = action.payload?.data;
       });
     builder
+      .addCase(completeTaskApi.pending, (state) => {})
+      .addCase(completeTaskApi.rejected, (state, action) => {})
+      .addCase(completeTaskApi.fulfilled, (state, action) => {
+        state.coins += action.payload?.data?.coinToAdd;
+        state.user.completedTask.push(action.payload?.data?.taskId);
+      });
+    builder
       .addCase(loginApi.pending, (state) => {})
       .addCase(loginApi.rejected, (state, action) => {})
       .addCase(loginApi.fulfilled, (state, action) => {
         state.user = action.payload?.data;
-        state.miningRate = action.payload?.data?.MiningRatePerHour
+        state.miningRate = action.payload?.data?.MiningRatePerHour;
         state.coins = action.payload?.data?.Balance;
         state.notification = action.payload?.notification;
+        state.rechargePoint = action.payload?.data?.rechargeLimit;
       });
   },
 });
 
-export const { changeCoin } = gameController.actions;
+export const { changeCoin , openBottomSheet , closeBottomSheet , changeRecharge} = gameController.actions;
 export default gameController.reducer;

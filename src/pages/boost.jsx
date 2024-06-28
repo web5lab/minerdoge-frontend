@@ -12,7 +12,7 @@ function Boost() {
 
   useEffect(() => {
     dispatch(getBoosters());
-  }, [booster]);
+  }, []);
 
   return (
     <div className="w-full h-full max-h-minus-60 flex px-4 flex-col items-center justify-center">

@@ -20,6 +20,15 @@ background: linear-gradient(90deg, rgba(243,177,91,1) 23%, rgba(106,243,91,1) 49
     font-size: 0.7rem/* 12px */;
     /* line-height: 1rem16px; */
 }
+div::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+  div {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
 
 .max-h-minus-60 {
     max-height: calc(100vh - 60px);

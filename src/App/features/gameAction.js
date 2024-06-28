@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../axios/axiosInstance";
-import axios from "axios";
+
 
 export const getNetwork = createAsyncThunk("game/getNetwork", async () => {
   try {
@@ -105,6 +105,28 @@ export const addClicks = createAsyncThunk("game/addClicks", async (obj) => {
 export const getFriends = createAsyncThunk("game/getFriends", async (obj) => {
   try {
     const Response = await axiosInstance.post("/bot/reffrals", obj);
+    return Response.data;
+  } catch (err) {
+    if (err) {
+      throw err;
+    }
+  }
+});
+
+export const changeNetworkApi = createAsyncThunk("game/changeNetworkApi", async (obj) => {
+  try {
+    const Response = await axiosInstance.post("/bot/changeNetwork", obj);
+    return Response.data;
+  } catch (err) {
+    if (err) {
+      throw err;
+    }
+  }
+});
+
+export const completeTaskApi = createAsyncThunk("game/completeTaskApi", async (obj) => {
+  try {
+    const Response = await axiosInstance.post("/bot/completetask", obj);
     return Response.data;
   } catch (err) {
     if (err) {

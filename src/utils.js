@@ -17,3 +17,13 @@ export const formatNumber = (num) => {
     return formattedValue + suffix;
   }
 };
+
+export  const getCoinPercentage = (bal, reqCoin) => {
+  let percentageChange = (Number(bal) / Number(reqCoin)) * 100;
+
+  if (percentageChange > 100) {
+    percentageChange = 100;
+  }
+
+  return percentageChange.toFixed(2);
+};

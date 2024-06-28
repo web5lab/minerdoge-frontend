@@ -1,14 +1,9 @@
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { PiGameControllerFill } from "react-icons/pi";
-import { FaUserFriends } from "react-icons/fa";
-import { GiTwoCoins } from "react-icons/gi";
-import { GiMining } from "react-icons/gi";
 import { GiElectric } from "react-icons/gi";
 import { RxRocket } from "react-icons/rx";
-import BottomSheet from "../component/BottomSheet";
 import { useNavigate } from "react-router-dom";
-import { formatNumber } from "../utils";
+import { formatNumber, getCoinPercentage } from "../utils";
 import DailyReward from "../component/DailyReward";
 import MinersNotification from "../component/MinersNotification";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,16 +12,22 @@ import { FaChevronRight } from "react-icons/fa";
 import {
   coinSelector,
   miningRateSelector,
+  networkSelector,
   RankSelector,
+  rechargeSelector,
   userSelector,
 } from "../selector/globalSelector";
-import { changeCoin } from "../App/features/gameSlice";
+import {
+  changeCoin,
+  changeRecharge,
+  openBottomSheet,
+} from "../App/features/gameSlice";
+import toast from "react-hot-toast";
 
 function Main() {
   const [points, setPoints] = useState([]);
   const [ripples, setRipples] = useState([]);
   const [isPushed, setIsPushed] = useState(false);
-  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(true);
   const [count, setCount] = useState(0);
   const [timeoutId, setTimeoutId] = useState(null);
   const navigation = useNavigate();
@@ -35,10 +36,22 @@ function Main() {
   const coin = useSelector(coinSelector);
   const miningRate = useSelector(miningRateSelector);
   const rank = useSelector(RankSelector);
+  const network = useSelector(networkSelector);
+  const recharge = useSelector(rechargeSelector);
 
-  const openBottomSheet = () => {
-    setIsBottomSheetOpen(true);
+  const openBottom = () => {
+    dispatch(openBottomSheet(<DailyReward />));
   };
+
+  useEffect(() => {
+    if (recharge < user?.rechargeLimit) {
+      const interval = setInterval(() => {
+        dispatch(changeRecharge(user?.rechargeRate || 1)); // Default to 1 if rechargeRate is not defined
+      }, 1000);
+
+      return () => clearInterval(interval); // Clean up the interval on component unmount or when recharge changes
+    }
+  }, [recharge, user?.rechargeRate]);
 
   useEffect(() => {
     return () => {
@@ -47,10 +60,6 @@ function Main() {
       }
     };
   }, [timeoutId]);
-
-  const closeBottomSheet = () => {
-    setIsBottomSheetOpen(false);
-  };
 
   const clickApiCaller = () => {
     setCount(count + 1);
@@ -77,7 +86,11 @@ function Main() {
   };
 
   const handleClick = (e) => {
+    if (recharge === 0) {
+      toast.error("insufficient recharge point");
+    }
     clickApiCaller();
+    dispatch(changeRecharge(-1));
     setIsPushed(true);
     const button = e.currentTarget;
     const rect = button.getBoundingClientRect();
@@ -140,11 +153,11 @@ function Main() {
           }}
         >
           <img
-            src="bnb.svg"
+            src={network[Number(user?.currentNetwork - 1)]?.logo}
             className="w-6 h-6  rounded-full  bg-gray-800 "
             alt="Diamond"
           />
-          <span>BSC</span>
+          <span>{network[Number(user?.currentNetwork - 1)]?.tittle}</span>
         </button>
       </div>
       <div className="px-auto mb-auto mt-3 h-full border-t-2 border-[#f3b15b] cs-shadow flex-col flex justify-between  rounded-2xl w-full">
@@ -157,7 +170,9 @@ function Main() {
                 className="w-4 h-4  rounded-full "
                 alt="Diamond"
               />
-              <span className="font-bold text-yellow-400">+{user?.earnPerclicks}</span>
+              <span className="font-bold text-yellow-400">
+                +{user?.earnPerclicks}
+              </span>
             </div>
           </button>
           <button className=" rounded-lg bg-gray-700">
@@ -169,10 +184,12 @@ function Main() {
                 alt="Diamond"
               />
 
-              <span className="font-bold text-yellow-400">+{formatNumber(rank[user?.currentRank[0]?.id]?.requiredAmount)}</span>
+              <span className="font-bold text-yellow-400">
+                +{formatNumber(rank[user?.currentRank]?.requiredAmount)}
+              </span>
             </div>
           </button>
-          <button className=" rounded-lg bg-gray-700" onClick={openBottomSheet}>
+          <button className=" rounded-lg bg-gray-700" onClick={openBottom}>
             <span className=" text-xs text-[#5b72f3]">Mining per hour</span>
             <div className="flex gap-1 justify-center items-center">
               <img
@@ -180,7 +197,9 @@ function Main() {
                 className="w-4 h-4  rounded-full "
                 alt="Diamond"
               />
-              <span className="font-bold text-yellow-400">+{formatNumber(miningRate)}</span>
+              <span className="font-bold text-yellow-400">
+                +{formatNumber(miningRate)}
+              </span>
             </div>
           </button>
         </div>
@@ -195,19 +214,31 @@ function Main() {
             {Math.floor(Number(coin)).toLocaleString()}
           </div>
         </div>
-        <div onClick={() => {
-          navigation("/leaderboard")
-        }}>
+        <div
+          onClick={() => {
+            navigation("/leaderboard");
+          }}
+        >
           <div className="mx-4 flex justify-between text-xs items-center">
-            <span className="text-yellow-400">Gold</span>
+            <span className="text-yellow-400">
+              {rank[user?.currentRank - 1]?.tittle}
+            </span>
             <FaChevronRight className="mr-auto ml-2" />
             <div>
               <span className="text-gray-300 mr-1">Rank</span>
-              <span>1/10</span>
+              <span>{user?.currentRank}/9</span>
             </div>
           </div>
           <div className="mt-1 mx-4 bg-gray-500 rounded-full h-3 overflow-hidden">
-            <div className="cs-loader h-full" style={{ width: "78.4%" }}></div>
+            <div
+              className="cs-loader h-full"
+              style={{
+                width: `${getCoinPercentage(
+                  Math.floor(Number(coin)),
+                  rank[user?.currentRank]?.requiredAmount
+                )}%`,
+              }}
+            ></div>
           </div>
         </div>
 
@@ -262,14 +293,16 @@ function Main() {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.5 }}
               >
-                +2
+                +{user?.earnPerclicks}
               </motion.div>
             ))}
           </AnimatePresence>
           <div className="mx-4 flex items-center justify-between mt-4">
             <div className="flex">
               <GiElectric className="text-yellow-400 text-2xl" />
-              <span className=" font-bold">1456 / 1500</span>
+              <span className=" font-bold">
+                {recharge} / {user?.rechargeLimit}
+              </span>
             </div>
             <button
               onClick={() => {
@@ -283,10 +316,6 @@ function Main() {
           </div>
         </div>
       </div>
-      <BottomSheet isOpen={isBottomSheetOpen} onClose={closeBottomSheet}>
-        <DailyReward />
-        {/* <MinersNotification/> */}
-      </BottomSheet>
     </div>
   );
 }

@@ -134,3 +134,25 @@ export const completeTaskApi = createAsyncThunk("game/completeTaskApi", async (o
     }
   }
 });
+
+export const buyBoosterApi = createAsyncThunk("game/buyBoosterApi", async (obj) => {
+  try {
+    const Response = await axiosInstance.post("/bot/buybooster", obj);
+    return Response.data;
+  } catch (err) {
+    if (err) {
+      throw err;
+    }
+  }
+});
+
+export const rankLeaderBoardApi = createAsyncThunk("game/rankLeaderBoardApi", async ({id}) => {
+  try {
+    const Response = await axiosInstance.get(`/bot/lederboard/${id}`, );
+    return Response.data;
+  } catch (err) {
+    if (err) {
+      throw err;
+    }
+  }
+});

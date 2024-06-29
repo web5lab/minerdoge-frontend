@@ -1,26 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { getNetwork } from "../App/features/gameAction";
-import { RankSelector } from "../selector/globalSelector";
+import { getNetwork, rankLeaderBoardApi } from "../App/features/gameAction";
+import { leaderBoardSelector, RankSelector } from "../selector/globalSelector";
 import { formatNumber } from "../utils";
 function RanksPage() {
     const [currentRank, setcurrentRank] = useState(0)
   const rank = useSelector(RankSelector);
+  const data = useSelector(leaderBoardSelector);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getNetwork());
+    dispatch(rankLeaderBoardApi({id:currentRank+1}));
   }, []);
 
   const nextRank = () => {
     if(currentRank!= rank?.length-1){
+      dispatch(rankLeaderBoardApi({id:currentRank+2}));
         setcurrentRank(currentRank+1)
+       
     }
   }
 
   const prevRank = () => {
     if(currentRank!= 0){
+      dispatch(rankLeaderBoardApi({id:currentRank}));
         setcurrentRank(currentRank-1)
+        
     }
   }
 
@@ -46,7 +51,7 @@ function RanksPage() {
       </div>
       <div className="w-full h-full  overflow-auto   my-2">
         <div className=" w-full grid gap-2">
-          {rank?.map((data, index) => (
+          {data?.map((l, index) => (
             <button
               key={index}
               className="w-full gap-2  bg-gray-700 text-white px-4 py-1 rounded-lg flex justify-between items-center"
@@ -57,10 +62,10 @@ function RanksPage() {
                 alt="Diamond"
               />
               <div className="mr-auto flex flex-col">
-                <span className="mr-auto">{data?.tittle}</span>
+                <span className="mr-auto">{l?.userName}</span>
                 <div className="flex gap-1 justify-center items-center">
                   <img className=" h-4 w-4 rounded-full" src="hashcoin.jpeg" />
-                  <span>1,20,000</span>
+                  <span>{Number(l?.totalEarning).toLocaleString()}</span>
                 </div>
               </div>
 

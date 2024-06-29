@@ -1,8 +1,8 @@
 import React from "react";
 import { IoCloseCircle } from "react-icons/io5";
-import { formatNumber } from "../utils";
 
-function MinersNotification() {
+function MinersNotification({amount}) {
+  
   return (
     <div className="w-full h-full max-h-minus-60 flex  flex-col items-center justify-center">
       <div className="w-full flex justify-end ">
@@ -20,7 +20,7 @@ function MinersNotification() {
               className="w-12 my-2 h-12 bg-white  rounded-full "
               alt="Diamond"
             />
-            <div className=" cs-text font-bold">{formatNumber(100000)}</div>
+            <div className=" cs-text font-bold">{Number(amount).toLocaleString}</div>
           </div>
           <h4 className=" text-center my-2">collect your earnings !</h4>
           <button className=" rounded-full font-semibold bg-white text-black p-4">

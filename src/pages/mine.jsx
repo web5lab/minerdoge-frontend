@@ -9,6 +9,8 @@ import {
   userSelector,
 } from "../selector/globalSelector";
 import { formatNumber } from "../utils";
+import { openBottomSheet } from "../App/features/gameSlice";
+import BuyMiner from "../component/buyMiner";
 
 function Mine() {
   const dispatch = useDispatch();
@@ -20,6 +22,48 @@ function Mine() {
   const coin = useSelector(coinSelector);
   const miningRate = useSelector(miningRateSelector);
   const user = useSelector(userSelector);
+
+  const openBuySection = (
+    logo,
+    tittle,
+    miningRate,
+    amount,
+    btnTxt,
+    enabled
+  ) => {
+    dispatch(
+      openBottomSheet(
+        <BuyMiner
+          logo={logo}
+          tittle={tittle}
+          miningRate={miningRate}
+          amount={amount}
+          btnTxt={btnTxt}
+          enabled={enabled}
+        />
+      )
+    );
+  };
+
+  const getCardInfo = (cardId, cardData) => {
+    let userBooster = user.miningCards.find((b) => b.id === cardId) || {
+      id: cardId,
+      level: 0,
+    };
+    const nextLevel = userBooster.level + 1;
+    const levelDetails = cardData.levelAmount.find(
+      (l) => l.level === nextLevel
+    );
+    let maxed = false;
+    if (!maxed) {
+      maxed = true;
+    }
+    return {
+      nextRank: userBooster.level,
+      nextAmount: levelDetails?.buyingPrice,
+      maxed: false,
+    };
+  };
 
   return (
     <div className="w-full h-full max-h-minus-60 flex px-4 flex-col items-center justify-center">
@@ -55,6 +99,9 @@ function Mine() {
             <button
               key={index}
               className="w-full gap-2  bg-gray-700 text-white p-2 rounded-lg flex flex-col justify-center items-center"
+              onClick={() => {
+                openBuySection(data?.imgUrl, data?.name, 10,500, "buy", true);
+              }}
             >
               <img
                 src={data?.imgUrl}

@@ -10,6 +10,7 @@ import {
   getRanks,
   getTask,
   loginApi,
+  rankLeaderBoardApi,
 } from "./gameAction";
 
 const initialState = {
@@ -20,12 +21,15 @@ const initialState = {
   booster: [],
   dailyRewards: [],
   notification: [],
+  leaderBoard:[],
   miningRate: 0,
   friends: [],
   coins: 0,
   rechargePoint:0,
   bottomSheet: null,
   bottomSheetEnabled: false,
+  dailyRewardData:null,
+  minerNotification:null,
   user: null,
 };
 
@@ -54,6 +58,16 @@ const gameController = createSlice({
       .addCase(getNetwork.rejected, (state, action) => {})
       .addCase(getNetwork.fulfilled, (state, action) => {
         state.networks = action.payload?.networks;
+      });
+    builder
+      .addCase(rankLeaderBoardApi.pending, (state) => {
+        state.leaderBoard = [];
+      })
+      .addCase(rankLeaderBoardApi.rejected, (state, action) => {
+        state.leaderBoard = [];
+      })
+      .addCase(rankLeaderBoardApi.fulfilled, (state, action) => {
+        state.leaderBoard = action.payload?.data;
       });
     builder
       .addCase(changeNetworkApi.pending, (state) => {})
@@ -101,8 +115,8 @@ const gameController = createSlice({
       .addCase(completeTaskApi.pending, (state) => {})
       .addCase(completeTaskApi.rejected, (state, action) => {})
       .addCase(completeTaskApi.fulfilled, (state, action) => {
-        state.coins += action.payload?.data?.coinToAdd;
-        state.user.completedTask.push(action.payload?.data?.taskId);
+        state.coins += action.payload?.coinToAdd;
+        state.user.completedTask.push(action.payload?.taskId);
       });
     builder
       .addCase(loginApi.pending, (state) => {})
@@ -111,7 +125,9 @@ const gameController = createSlice({
         state.user = action.payload?.data;
         state.miningRate = action.payload?.data?.MiningRatePerHour;
         state.coins = action.payload?.data?.Balance;
+        state.dailyRewardData = action.payload?.dailyReward;
         state.notification = action.payload?.notification;
+        state.minerNotification = action.payload?.minerNotification;
         state.rechargePoint = action.payload?.data?.rechargeLimit;
       });
   },

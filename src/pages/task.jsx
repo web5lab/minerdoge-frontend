@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { FaAnglesRight } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  dailyRewardDataSelector,
   friendsSelector,
   taskSelector,
   userSelector,
@@ -13,6 +14,8 @@ import {
 } from "../App/features/gameAction";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import DailyReward from "../component/DailyReward";
+import { openBottomSheet } from "../App/features/gameSlice";
 
 function Task() {
   const dispatch = useDispatch();
@@ -20,6 +23,7 @@ function Task() {
   const task = useSelector(taskSelector);
   const user = useSelector(userSelector);
   const friends = useSelector(friendsSelector);
+  const userData = useSelector(dailyRewardDataSelector);
   useEffect(() => {
     dispatch(getTask());
   }, [user]);
@@ -32,10 +36,16 @@ function Task() {
     dispatch(getFriends(obj));
   }, []);
 
+  const openDailyLogin = () => {
+    dispatch(openBottomSheet(<DailyReward />));
+  };
+
   const completeTask = (url, id, type, requiremnet) => {
     if (type === "refral") {
       if (friends?.referralCount < requiremnet + 1) {
-        toast.error(`need ${requiremnet - friends?.referralCount} more refrals`);
+        toast.error(
+          `need ${requiremnet - friends?.referralCount} more refrals`
+        );
       } else {
         const obj = {
           tgData:
@@ -97,9 +107,7 @@ function Task() {
             <span classname=" text-xl font-extrabold">Daily Tasks</span>
             <button
               className="w-full gap-4 py-2 my-2 bg-gray-700 text-white px-4 rounded-lg flex justify-between items-center"
-              onClick={() => {
-                // window.open(`${data?.Url}`, "_blank");
-              }}
+              onClick={openDailyLogin}
             >
               <img
                 src="calender.png"
@@ -117,7 +125,7 @@ function Task() {
                     alt="Diamond"
                   />
                   <span className=" text-xs font-extrabold text-white">
-                    Come back tomorrow
+                    {userData?.claimed ? "Come back tommorow" : "Collect Now"}
                   </span>
                 </div>
               </div>
@@ -204,7 +212,7 @@ function Task() {
                         alt="Diamond"
                       />
                       <span className=" text-xs font-extrabold">
-                      {user.completedTask.includes(data?.id)
+                        {user.completedTask.includes(data?.id)
                           ? "Completed"
                           : Number(data?.rewardAmount).toLocaleString()}
                       </span>

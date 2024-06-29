@@ -72,3 +72,18 @@ export const rechargeSelector = createSelector(
   [gameSelector],
   (game) => game.rechargePoint
 )
+
+export const dailyRewardDataSelector = createSelector(
+  [gameSelector],
+  (game) => game.dailyRewardData
+)
+
+export const miningNotificationSelector = createSelector(
+  [gameSelector],
+  (game) => game.minerNotification
+)
+
+export const leaderBoardSelector = createSelector(
+  [gameSelector],
+  (game) => game.leaderBoard
+)

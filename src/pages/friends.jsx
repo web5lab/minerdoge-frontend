@@ -30,7 +30,7 @@ function Friends() {
   }, []);
   const handleButtonClick = () => {
     const message =
-      "https://t.me/hamster_Kombat_bot/start?startapp=kentId5281683183\n\nPlay with me, become cryptoexchange CEO and get a token airdrop!\n💸  2k Coins as a first-time gift\n🔥  25k Coins if you have Telegram Premium";
+      `https://t.me/minerdogcoin_bot/earn?startapp=${user?.id}\n\nPlay with me get a token airdrop!\n💸  5k Coins as a first-time gift\n🔥  10k Coins if you have Telegram Premium`;
     const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent(
       message
     )}`;
@@ -40,7 +40,7 @@ function Friends() {
   const handleCopy = () => {
     toast.success("Copied Succesfully");
     navigator.clipboard.writeText(
-      `https://t.me/hamster_Kombat_bot/start?startapp=R_${user?.id}`
+      `https://t.me/minerdogcoin_bot/earn?startapp=${user?.id}`
     );
   };
 

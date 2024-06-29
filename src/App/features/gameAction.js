@@ -135,6 +135,17 @@ export const completeTaskApi = createAsyncThunk("game/completeTaskApi", async (o
   }
 });
 
+export const DailyLoginApi = createAsyncThunk("game/DailyLoginApi", async (obj) => {
+  try {
+    const Response = await axiosInstance.post("/bot/dailylogin", obj);
+    return Response.data;
+  } catch (err) {
+    if (err) {
+      throw err;
+    }
+  }
+});
+
 export const buyBoosterApi = createAsyncThunk("game/buyBoosterApi", async (obj) => {
   try {
     const Response = await axiosInstance.post("/bot/buybooster", obj);

@@ -5,6 +5,7 @@ import {
   dailyRewardDataSelector,
   friendsSelector,
   taskSelector,
+  tgDataSelector,
   userSelector,
 } from "../selector/globalSelector";
 import {
@@ -24,14 +25,14 @@ function Task() {
   const user = useSelector(userSelector);
   const friends = useSelector(friendsSelector);
   const userData = useSelector(dailyRewardDataSelector);
+  const tg = useSelector(tgDataSelector);
   useEffect(() => {
     dispatch(getTask());
   }, [user]);
 
   useEffect(() => {
     const obj = {
-      tgData:
-        "user=%7B%22id%22%3A5281683183%2C%22first_name%22%3A%22OtGalaxy%20Dev%22%2C%22last_name%22%3A%22%22%2C%22username%22%3A%22OtGalaxy_Dev%22%2C%22language_code%22%3A%22en%22%2C%22allows_write_to_pm%22%3Atrue%7D&chat_instance=-4195278687679847124&chat_type=supergroup&auth_date=1719115920&hash=788f8150e3f54b36d6218c32723011811d8213efb63b5ce375a77ce1ebde17a7",
+      tgData: tg,
     };
     dispatch(getFriends(obj));
   }, []);
@@ -48,8 +49,7 @@ function Task() {
         );
       } else {
         const obj = {
-          tgData:
-            "user=%7B%22id%22%3A5281683183%2C%22first_name%22%3A%22OtGalaxy%20Dev%22%2C%22last_name%22%3A%22%22%2C%22username%22%3A%22OtGalaxy_Dev%22%2C%22language_code%22%3A%22en%22%2C%22allows_write_to_pm%22%3Atrue%7D&chat_instance=-4195278687679847124&chat_type=supergroup&auth_date=1719115920&hash=788f8150e3f54b36d6218c32723011811d8213efb63b5ce375a77ce1ebde17a7",
+          tgData: tg,
           taskId: id,
         };
         dispatch(completeTaskApi(obj));
@@ -58,8 +58,7 @@ function Task() {
     }
     window.open(`${url}`, "_blank");
     const obj = {
-      tgData:
-        "user=%7B%22id%22%3A5281683183%2C%22first_name%22%3A%22OtGalaxy%20Dev%22%2C%22last_name%22%3A%22%22%2C%22username%22%3A%22OtGalaxy_Dev%22%2C%22language_code%22%3A%22en%22%2C%22allows_write_to_pm%22%3Atrue%7D&chat_instance=-4195278687679847124&chat_type=supergroup&auth_date=1719115920&hash=788f8150e3f54b36d6218c32723011811d8213efb63b5ce375a77ce1ebde17a7",
+      tgData: tg,
       taskId: id,
     };
     dispatch(completeTaskApi(obj));

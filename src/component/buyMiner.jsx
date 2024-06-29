@@ -8,6 +8,9 @@ function BuyMiner({ logo, tittle, miningRate, amount, btnTxt, enabled, func }) {
   const closeSheet = () => {
     dispatch(closeBottomSheet());
   };
+  const buyMinerFn = () => {
+    
+  }
   return (
     <div className="w-full h-full max-h-minus-60 flex  flex-col items-center justify-center">
       <div className="w-full flex justify-end ">

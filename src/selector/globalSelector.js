@@ -87,3 +87,7 @@ export const leaderBoardSelector = createSelector(
   [gameSelector],
   (game) => game.leaderBoard
 )
+export const tgDataSelector = createSelector(
+  [gameSelector],
+  (game) => game.tgData
+)

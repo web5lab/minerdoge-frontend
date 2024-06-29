@@ -30,6 +30,7 @@ const initialState = {
   bottomSheetEnabled: false,
   dailyRewardData:null,
   minerNotification:null,
+  tgData:null,
   user: null,
 };
 
@@ -51,6 +52,9 @@ const gameController = createSlice({
       state.bottomSheetEnabled = false;
       state.bottomSheet = null;
     },
+    setTgdata:(state,action) => {
+      state.tgData = action.payload;
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -133,5 +137,5 @@ const gameController = createSlice({
   },
 });
 
-export const { changeCoin , openBottomSheet , closeBottomSheet , changeRecharge} = gameController.actions;
+export const { changeCoin , openBottomSheet , setTgdata,closeBottomSheet , changeRecharge} = gameController.actions;
 export default gameController.reducer;

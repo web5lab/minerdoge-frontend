@@ -1,15 +1,23 @@
 import React from "react";
 import { IoCloseCircle } from "react-icons/io5";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { closeBottomSheet } from "../App/features/gameSlice";
+import { buyBoosterApi, buyMinerApi } from "../App/features/gameAction";
+import { tgDataSelector } from "../selector/globalSelector";
 
-function BuyMiner({ logo, tittle, miningRate, amount, btnTxt, enabled, func }) {
+function BuyMiner({ logo, tittle, miningRate, amount, btnTxt, enabled, id }) {
   const dispatch = useDispatch();
+  const tg = useSelector(tgDataSelector);
+  
   const closeSheet = () => {
     dispatch(closeBottomSheet());
   };
   const buyMinerFn = () => {
-    
+    const obj = {
+      tgData: tg,
+      minerId:id
+    };
+    dispatch(buyMinerApi(obj))
   }
   return (
     <div className="w-full h-full max-h-minus-60 flex  flex-col items-center justify-center">
@@ -49,7 +57,7 @@ function BuyMiner({ logo, tittle, miningRate, amount, btnTxt, enabled, func }) {
           </div>
           <button
             enabled={enabled}
-            onClick={func}
+            onClick={buyMinerFn}
             className="w-full rounded-full font-semibold bg-white text-black p-4"
           >
             {btnTxt}

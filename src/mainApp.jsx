@@ -13,7 +13,7 @@ function MainApp() {
     if (mining_Rate != 0) {
       startMining(mining_Rate);
     }
-  }, []);
+  }, [mining_Rate]);
 
   const startMining = (miningRate) => {
     let interval = 1000;

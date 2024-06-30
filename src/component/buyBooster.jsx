@@ -1,9 +1,10 @@
 import React from "react";
 import { IoCloseCircle } from "react-icons/io5";
 import { formatNumber } from "../utils";
-import { bottomSheetSelector } from "../selector/globalSelector";
+import { bottomSheetSelector, tgDataSelector } from "../selector/globalSelector";
 import { closeBottomSheet } from "../App/features/gameSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { buyBoosterApi } from "../App/features/gameAction";
 
 function BuyBooster({
   logo,
@@ -13,12 +14,21 @@ function BuyBooster({
   btnTxt,
   enabled,
   bufDetail,
-  func
+  id
 }) {
+  const tg = useSelector(tgDataSelector);
   const dispatch = useDispatch();
   const closeSheet = () => {
     dispatch(closeBottomSheet());
   };
+
+  const buyBoosterFn = () => {
+    const obj = {
+      tgData: tg,
+      boosterId:id
+    };
+    dispatch(buyBoosterApi(obj))
+  }
   return (
     <div className="w-full h-full max-h-minus-60 flex  flex-col items-center justify-center">
       <div className="w-full flex justify-end ">
@@ -46,7 +56,7 @@ function BuyBooster({
               {Number(amount).toLocaleString()}
             </div>
           </div>
-          <button enabled={enabled} onClick={func} className="w-full rounded-full font-semibold bg-white text-black p-4">
+          <button enabled={enabled} onClick={buyBoosterFn} className="w-full rounded-full font-semibold bg-white text-black p-4">
             {btnTxt}
           </button>
         </div>

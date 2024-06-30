@@ -1,7 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
+  buyBoosterApi,
+  buyMinerApi,
   changeNetworkApi,
   completeTaskApi,
+  DailyLoginApi,
   getBoosters,
   getDailyReward,
   getFriends,
@@ -21,16 +24,16 @@ const initialState = {
   booster: [],
   dailyRewards: [],
   notification: [],
-  leaderBoard:[],
+  leaderBoard: [],
   miningRate: 0,
   friends: [],
   coins: 0,
-  rechargePoint:0,
+  rechargePoint: 0,
   bottomSheet: null,
   bottomSheetEnabled: false,
-  dailyRewardData:null,
-  minerNotification:null,
-  tgData:null,
+  dailyRewardData: null,
+  minerNotification: null,
+  tgData: null,
   user: null,
 };
 
@@ -52,9 +55,9 @@ const gameController = createSlice({
       state.bottomSheetEnabled = false;
       state.bottomSheet = null;
     },
-    setTgdata:(state,action) => {
+    setTgdata: (state, action) => {
       state.tgData = action.payload;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -78,6 +81,18 @@ const gameController = createSlice({
       .addCase(changeNetworkApi.rejected, (state, action) => {})
       .addCase(changeNetworkApi.fulfilled, (state, action) => {
         state.user.currentNetwork = action.payload?.data;
+      });
+    builder
+      .addCase(buyMinerApi.pending, (state) => {})
+      .addCase(buyMinerApi.rejected, (state, action) => {})
+      .addCase(buyMinerApi.fulfilled, (state, action) => {
+        state.miningRate += action.payload?.hashAdded;
+        state.user.MiningRatePerHour += action.payload?.hashAdded;
+        state.user.Balance -= action.payload?.balanceToDeduct;
+        state.coins -= action.payload?.balanceToDeduct;
+        state.user.miningCards = action.payload?.userMiningCard;
+        state.bottomSheetEnabled = false;
+        state.bottomSheet = null;
       });
     builder
       .addCase(getMiningCards.pending, (state) => {})
@@ -116,6 +131,39 @@ const gameController = createSlice({
         state.booster = action.payload?.data;
       });
     builder
+      .addCase(DailyLoginApi.pending, (state) => {})
+      .addCase(DailyLoginApi.rejected, (state) => {})
+      .addCase(DailyLoginApi.fulfilled, (state ,action) => {
+        state.user.Balance += action.payload?.balanceToAdd;
+        state.coins += action.payload?.balanceToAdd;
+        state.dailyRewardData.rewardStreak = 0;
+        state.dailyRewardData.compltedDay += 1;
+        state.dailyRewardData.claimed = true;
+        state.bottomSheetEnabled = false;
+        state.bottomSheet = null;
+      });
+    builder
+      .addCase(buyBoosterApi.pending, (state) => {})
+      .addCase(buyBoosterApi.rejected, (state, action) => {})
+      .addCase(buyBoosterApi.fulfilled, (state, action) => {
+        const type = action.payload?.type;
+        const buff = action.payload?.buffIncrement;
+        state.user.boosterCrads = action.payload?.userCard;
+        state.user.Balance -= action.payload?.balanceToDeduct;
+        state.coins -= action.payload?.balanceToDeduct;
+        if (type === "Clicks") {
+          state.user.earnPerclicks += buff;
+        }
+        if (type === "RechargeLimit") {
+          state.user.rechargeLimit += buff;
+        }
+        if (type === "RechargeRate") {
+          state.user.rechargeRate += buff;
+        }
+        state.bottomSheetEnabled = false;
+        state.bottomSheet = null;
+      });
+    builder
       .addCase(completeTaskApi.pending, (state) => {})
       .addCase(completeTaskApi.rejected, (state, action) => {})
       .addCase(completeTaskApi.fulfilled, (state, action) => {
@@ -137,5 +185,11 @@ const gameController = createSlice({
   },
 });
 
-export const { changeCoin , openBottomSheet , setTgdata,closeBottomSheet , changeRecharge} = gameController.actions;
+export const {
+  changeCoin,
+  openBottomSheet,
+  setTgdata,
+  closeBottomSheet,
+  changeRecharge,
+} = gameController.actions;
 export default gameController.reducer;

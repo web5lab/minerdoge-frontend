@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "https://api.minerdoge.fun/",
+  baseURL: "http://localhost:3137/",
 });
 
 axiosInstance.interceptors.response.use(

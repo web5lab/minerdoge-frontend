@@ -62,14 +62,14 @@ function RanksPage() {
                 alt="Diamond"
               />
               <div className="mr-auto flex flex-col">
-                <span className="mr-auto">{l?.userName}</span>
-                <div className="flex gap-1 justify-center items-center">
+                <span className="mr-auto">{l?.name}</span>
+                <div className="flex gap-1 justify-start items-center">
                   <img className=" h-4 w-4 rounded-full" src="hashcoin.jpeg" />
                   <span>{Number(l?.totalEarning).toLocaleString()}</span>
                 </div>
               </div>
 
-              <span> {index}</span>
+              <span> #{index+1}</span>
             </button>
           ))}
         </div>

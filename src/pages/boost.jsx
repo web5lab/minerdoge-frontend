@@ -28,8 +28,10 @@ function Boost() {
     amount,
     btnTxt,
     enabled,
-    bufDetail
+
+    id
   ) => {
+    console.log("id",id);
     dispatch(
       openBottomSheet(
         <BuyBooster
@@ -38,6 +40,7 @@ function Boost() {
           amount={amount}
           btnTxt={btnTxt}
           enabled={enabled}
+          id={id}
         />
       )
     );
@@ -109,7 +112,7 @@ function Boost() {
                 key={index}
                 className="p-1 bg-gray-700 flex justify-between items-center gap-2 rounded-lg"
                 onClick={() => {
-                  openBuySection(data?.imgUrl,data?.name,"ssd",getCardInfo(data?.id, data).nextAmount,"Get","fgh")
+                  openBuySection(data?.imgUrl,data?.name,"ssd",getCardInfo(data?.id, data).nextAmount,"Get",true,data?.id);
                 }}
               >
                 <img src={data?.imgUrl} className="w-8" alt="" />

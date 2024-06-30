@@ -157,6 +157,17 @@ export const buyBoosterApi = createAsyncThunk("game/buyBoosterApi", async (obj) 
   }
 });
 
+export const buyMinerApi = createAsyncThunk("game/buyMinerApi", async (obj) => {
+  try {
+    const Response = await axiosInstance.post("/bot/buyminer", obj);
+    return Response.data;
+  } catch (err) {
+    if (err) {
+      throw err;
+    }
+  }
+});
+
 export const rankLeaderBoardApi = createAsyncThunk("game/rankLeaderBoardApi", async ({id}) => {
   try {
     const Response = await axiosInstance.get(`/bot/lederboard/${id}`, );

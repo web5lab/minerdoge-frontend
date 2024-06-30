@@ -29,7 +29,8 @@ function Mine() {
     miningRate,
     amount,
     btnTxt,
-    enabled
+    enabled,
+    id
   ) => {
     dispatch(
       openBottomSheet(
@@ -40,6 +41,7 @@ function Mine() {
           amount={amount}
           btnTxt={btnTxt}
           enabled={enabled}
+          id={id}
         />
       )
     );
@@ -100,7 +102,7 @@ function Mine() {
               key={index}
               className="w-full gap-2  bg-gray-700 text-white p-2 rounded-lg flex flex-col justify-center items-center"
               onClick={() => {
-                openBuySection(data?.imgUrl, data?.name, 10,500, "buy", true);
+                openBuySection(data?.imgUrl, data?.name, 10, 500, "buy", true , data?.id);
               }}
             >
               <img

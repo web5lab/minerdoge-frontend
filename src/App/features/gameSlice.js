@@ -16,6 +16,7 @@ import {
   rankLeaderBoardApi,
 } from "./gameAction";
 
+
 const initialState = {
   networks: [],
   miningCards: [],
@@ -87,7 +88,11 @@ const gameController = createSlice({
       });
     builder
       .addCase(buyMinerApi.pending, (state) => {})
-      .addCase(buyMinerApi.rejected, (state, action) => {})
+      .addCase(buyMinerApi.rejected, (state, action) => {
+
+        state.bottomSheetEnabled = false;
+        state.bottomSheet = null;
+      })
       .addCase(buyMinerApi.fulfilled, (state, action) => {
         state.miningRate += action.payload?.hashAdded;
         state.user.MiningRatePerHour += action.payload?.hashAdded;
@@ -147,7 +152,11 @@ const gameController = createSlice({
       });
     builder
       .addCase(buyBoosterApi.pending, (state) => {})
-      .addCase(buyBoosterApi.rejected, (state, action) => {})
+      .addCase(buyBoosterApi.rejected, (state, action) => {
+
+        state.bottomSheetEnabled = false;
+        state.bottomSheet = null;
+      })
       .addCase(buyBoosterApi.fulfilled, (state, action) => {
         const type = action.payload?.type;
         const buff = action.payload?.buffIncrement;

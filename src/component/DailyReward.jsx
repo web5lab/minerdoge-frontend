@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
 import { IoCloseCircle } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
-import { getDailyReward } from "../App/features/gameAction";
+import { DailyLoginApi, getDailyReward } from "../App/features/gameAction";
 import {
   dailyRewardDataSelector,
   dailyRewardSelector,
+  tgDataSelector,
 } from "../selector/globalSelector";
 import { formatNumber } from "../utils";
 import { closeBottomSheet } from "../App/features/gameSlice";
@@ -16,8 +17,15 @@ function DailyReward() {
   }, []);
   const data = useSelector(dailyRewardSelector);
   const userData = useSelector(dailyRewardDataSelector);
+  const tg = useSelector(tgDataSelector);
   const closeSheet = () => {
     dispatch(closeBottomSheet());
+  };
+  const collectReward = () => {
+    const obj = {
+      tgData: tg,
+    };
+    dispatch(DailyLoginApi());
   };
   return (
     <div className="w-full h-full max-h-minus-60 flex  flex-col items-center justify-center">
@@ -59,8 +67,13 @@ function DailyReward() {
             ))}
           </div>
           <button
-            className={` ${userData?.claimed ? "text-white bg-black border-2" : "bg-white text-black"} mt-4 rounded-full font-semibold  p-4`}
+            className={` ${
+              userData?.claimed
+                ? "text-white bg-black border-2"
+                : "bg-white text-black"
+            } mt-4 rounded-full font-semibold  p-4`}
             disabled={userData?.claimed}
+            onClick={collectReward}
           >
             {userData?.claimed ? "Come back tommorow" : "Collect"}
           </button>

@@ -24,20 +24,34 @@ function Boost() {
   const openBuySection = (
     logo,
     tittle,
-    subtitle,
+
     amount,
     btnTxt,
     enabled,
-
     id
   ) => {
-    console.log("id", id);
+    let details;
+    let subDetails;
+    if (id === 1) {
+      details = "Increase the amount of coins earned by tap";
+      subDetails = "+1 coin tap per level";
+    }
+    if (id === 2) {
+      details = "Increase your max energy limit";
+      subDetails = "+500 energy per level";
+    }
+    if (id === 3) {
+      details = "Increase your Recharge per second";
+      subDetails = "+1 per sec for each level";
+    }
     dispatch(
       openBottomSheet(
         <BuyBooster
           logo={logo}
           tittle={tittle}
           amount={amount}
+          subtitle={details}
+          bufDetail={subDetails}
           btnTxt={btnTxt}
           enabled={enabled}
           id={id}
@@ -56,13 +70,13 @@ function Boost() {
       (l) => l.level === nextLevel
     );
     let maxed = false;
-    if (!maxed) {
+    if (!levelDetails) {
       maxed = true;
     }
     return {
       nextRank: userBooster.level + 1,
       nextAmount: levelDetails?.buyingPrice,
-      maxed: false,
+      maxed: maxed,
     };
   };
 
@@ -110,31 +124,35 @@ function Boost() {
                   openBuySection(
                     data?.imgUrl,
                     data?.name,
-                    "ssd",
                     getCardInfo(data?.id, data).nextAmount,
                     "Get",
                     true,
                     data?.id
                   );
                 }}
+                disabled={getCardInfo(data?.id, data).maxed}
               >
                 <img src={data?.imgUrl} className="w-8" alt="" />
                 <div className="flex flex-col mr-auto items-start gap-[1px]">
                   <span>{data?.name}</span>
-                  <div className="flex justify-start gap-2 items-center">
-                    <img
-                      className=" h-6 w-6 rounded-full"
-                      src="hashcoin.jpeg"
-                    />
-                    <span className=" font-bold">
-                      {Number(
-                        getCardInfo(data?.id, data).nextAmount
-                      ).toLocaleString()}
-                    </span>
-                    <span className=" text-gray-400">
-                      {getCardInfo(data?.id, data).nextRank} Lvl
-                    </span>
-                  </div>
+                  {getCardInfo(data?.id, data).maxed ? (
+                    ""
+                  ) : (
+                    <div className="flex justify-start gap-2 items-center">
+                      <img
+                        className=" h-6 w-6 rounded-full"
+                        src="hashcoin.jpeg"
+                      />
+                      <span className=" font-bold">
+                        {Number(
+                          getCardInfo(data?.id, data).nextAmount
+                        ).toLocaleString()}
+                      </span>
+                      <span className=" text-gray-400">
+                        {getCardInfo(data?.id, data).nextRank} Lvl
+                      </span>
+                    </div>
+                  )}
                 </div>
                 <FaChevronRight className=" text-2xl text-gray-400" />
               </button>

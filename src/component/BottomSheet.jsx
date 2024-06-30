@@ -1,19 +1,30 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { bottomSheetSelector, bottomStatusSelector } from '../selector/globalSelector';
-import { closeBottomSheet } from '../App/features/gameSlice';
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  bottomSheetSelector,
+  bottomStatusSelector,
+  miningNotificationSelector,
+} from "../selector/globalSelector";
+import {
+  closeBottomSheet,
+  closeMiningNotification,
+} from "../App/features/gameSlice";
 
 const BottomSheet = () => {
-  const dispatch = useDispatch()
-  const status = useSelector(bottomStatusSelector)
-  const bottomSheet = useSelector(bottomSheetSelector)
+  const dispatch = useDispatch();
+  const status = useSelector(bottomStatusSelector);
+  const bottomSheet = useSelector(bottomSheetSelector);
+  const miningNotification = useSelector(miningNotificationSelector);
   const closeSheet = () => {
-    dispatch(closeBottomSheet())
-  }
+    if (miningNotification) {
+      dispatch(closeMiningNotification());
+    }
+    dispatch(closeBottomSheet());
+  };
   return (
     <div
       className={`fixed inset-0 z-50 transition-transform transform ${
-        status ? 'translate-y-0' : 'translate-y-full'
+        status ? "translate-y-0" : "translate-y-full"
       }`}
     >
       {/* Overlay */}
@@ -25,7 +36,7 @@ const BottomSheet = () => {
       {/* Bottom Sheet */}
       <div
         className="absolute bottom-0  w-full bg-black rounded-t-3xl p-4 shadow-lg"
-        style={{ maxHeight: '90vh', overflowY: 'auto' }}
+        style={{ maxHeight: "90vh", overflowY: "auto" }}
       >
         {bottomSheet}
       </div>

@@ -57,13 +57,15 @@ function Mine() {
       (l) => l.level === nextLevel
     );
     let maxed = false;
-    if (!maxed) {
+    let nextRank = userBooster.level;
+    if (!levelDetails) {
+      nextRank -= 1;
       maxed = true;
     }
     return {
-      nextRank: userBooster.level,
+      nextRank: nextRank,
       nextAmount: levelDetails?.buyingPrice,
-      maxed: false,
+      maxed: maxed,
     };
   };
 
@@ -90,10 +92,10 @@ function Mine() {
           +{formatNumber(miningRate)}
         </span>
       </div>
-      <div className=" text-xs bg-gray-700  rounded-md p-2 w-full grid grid-cols-3">
-        <button className=" hover:bg-gray-800 p-1 rounded-md">Upgrades</button>
-        <button className=" hover:bg-gray-800 p-1 rounded-md">Specials</button>
-        <button className=" hover:bg-gray-800 p-1 rounded-md">Owned</button>
+      <div className=" text-xs bg-gray-700  rounded-md p-2 w-full grid grid-cols-1">
+        <button className=" hover:bg-gray-800 p-1 font-bold rounded-md">
+          Mining Cards
+        </button>
       </div>
       <div className="w-full h-full  overflow-auto   my-2">
         <div className=" w-full grid grid-cols-2 gap-2">
@@ -101,8 +103,17 @@ function Mine() {
             <button
               key={index}
               className="w-full gap-2  bg-gray-700 text-white p-2 rounded-lg flex flex-col justify-center items-center"
+              disabled={getCardInfo(data?.id, data).maxed}
               onClick={() => {
-                openBuySection(data?.imgUrl, data?.name, 10, 500, "buy", true , data?.id);
+                openBuySection(
+                  data?.imgUrl,
+                  data?.name,
+                  10,
+                  500,
+                  "buy",
+                  true,
+                  data?.id
+                );
               }}
             >
               <img
@@ -118,25 +129,36 @@ function Mine() {
                   className="w-4 h-4  rounded-full "
                   alt="Diamond"
                 />
+
                 <span className=" text-xs font-extrabold text-yellow-400">
-                  +{data?.levelAmount[0]?.miningRate}
+                  +
+                  {
+                    data?.levelAmount[getCardInfo(data?.id, data).nextRank]
+                      ?.miningRate
+                  }
                 </span>
               </div>
               <div className="w-full h-[2px] my-[1px] bg-gray-600 rounded-full"></div>
-              <div className="flex justify-between w-full px-2 min-h-12 items-center">
-                <span>Lvl 0</span>
-                <div className="h-full w-[2px]  bg-gray-600"></div>
-                <div className="flex gap-2">
-                  <img
-                    src="hashcoin.jpeg"
-                    className="w-4 h-4  rounded-full "
-                    alt="Diamond"
-                  />
-                  <span className=" text-xs font-extrabold text-yellow-400">
-                    {formatNumber(data?.levelAmount[0]?.buyingPrice)}
-                  </span>
+              {getCardInfo(data?.id, data).maxed ? (
+                <span>Maxed Out</span>
+              ) : (
+                <div className="flex justify-between w-full px-2 min-h-12 items-center">
+                  <span>Lvl {getCardInfo(data?.id, data).nextRank}</span>
+
+                  <div className="h-full w-[2px]  bg-gray-600"></div>
+                  <div className="flex gap-2">
+                    <img
+                      src="hashcoin.jpeg"
+                      className="w-4 h-4  rounded-full "
+                      alt="Diamond"
+                    />
+
+                    <span className=" text-xs font-extrabold text-yellow-400">
+                      {formatNumber(getCardInfo(data?.id, data).nextAmount)}
+                    </span>
+                  </div>
                 </div>
-              </div>
+              )}
             </button>
           ))}
         </div>

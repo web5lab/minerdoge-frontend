@@ -11,6 +11,7 @@ import { addClicks, loginApi } from "../App/features/gameAction";
 import { FaChevronRight } from "react-icons/fa";
 import {
   coinSelector,
+  miningNotificationSelector,
   miningRateSelector,
   networkSelector,
   RankSelector,
@@ -40,10 +41,18 @@ function Main() {
   const network = useSelector(networkSelector);
   const recharge = useSelector(rechargeSelector);
   const tg = useSelector(tgDataSelector);
+  const miningNotification = useSelector(miningNotificationSelector)
 
   const openBottom = () => {
     dispatch(openBottomSheet(<DailyReward />));
   };
+
+  useEffect(() => {
+   if(miningNotification){
+dispatch(openBottomSheet(<MinersNotification amount={miningNotification?.amount}/>))
+   }
+  }, [])
+  
 
   useEffect(() => {
     if (recharge < user?.rechargeLimit) {
@@ -144,7 +153,7 @@ function Main() {
             src="userlogo.png"
           ></img>
           <div>
-            <div className=" text-base font-semibold">OtGalaxy_Dev</div>
+            <div className=" text-base font-semibold">{user?.name}</div>
           </div>
         </div>
         <button

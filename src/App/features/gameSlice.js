@@ -47,6 +47,9 @@ const gameController = createSlice({
     changeRecharge: (state, action) => {
       state.rechargePoint = state.rechargePoint + action.payload;
     },
+    closeMiningNotification: (state) => {
+      state.minerNotification = null;
+    },
     openBottomSheet: (state, action) => {
       state.bottomSheet = action.payload;
       state.bottomSheetEnabled = true;
@@ -191,5 +194,6 @@ export const {
   setTgdata,
   closeBottomSheet,
   changeRecharge,
+  closeMiningNotification
 } = gameController.actions;
 export default gameController.reducer;

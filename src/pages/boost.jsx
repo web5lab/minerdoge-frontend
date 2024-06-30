@@ -31,7 +31,7 @@ function Boost() {
 
     id
   ) => {
-    console.log("id",id);
+    console.log("id", id);
     dispatch(
       openBottomSheet(
         <BuyBooster
@@ -83,16 +83,11 @@ function Boost() {
 
           <h1 className=" text-center text-2xl font-bold">Free Daily Boosts</h1>
           <div className="grid grid-cols-2 gap-2">
-            <button
-              onClick={() => {
-                console.log("bs", booster);
-              }}
-              className="p-1 bg-gray-700 flex justify-center items-center gap-2 rounded-lg"
-            >
+            <button className="p-1 bg-gray-700 flex justify-center items-center gap-2 rounded-lg">
               <img src="rocket.png" className="w-8" alt="" />
               <div className="flex flex-col items-start gap-[1px]">
                 <span>Booster</span>
-                <span>{user?.powerUps?.boost?.remaining}/3</span>
+                <span className="text-gray-400 font-semibold">Coming Soon</span>
               </div>
             </button>
             <button className="p-1 bg-gray-700 flex justify-center items-center gap-2 rounded-lg">
@@ -101,7 +96,7 @@ function Boost() {
                 <span className="text-yellow-400 font-medium ">
                   Full Energy
                 </span>
-                <span>avilable</span>
+                <span className="text-gray-400 font-semibold">Coming Soon</span>
               </div>
             </button>
           </div>
@@ -112,7 +107,15 @@ function Boost() {
                 key={index}
                 className="p-1 bg-gray-700 flex justify-between items-center gap-2 rounded-lg"
                 onClick={() => {
-                  openBuySection(data?.imgUrl,data?.name,"ssd",getCardInfo(data?.id, data).nextAmount,"Get",true,data?.id);
+                  openBuySection(
+                    data?.imgUrl,
+                    data?.name,
+                    "ssd",
+                    getCardInfo(data?.id, data).nextAmount,
+                    "Get",
+                    true,
+                    data?.id
+                  );
                 }}
               >
                 <img src={data?.imgUrl} className="w-8" alt="" />

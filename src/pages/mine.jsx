@@ -66,7 +66,7 @@ function Mine() {
     let hashAdded;
 
     if (nextLevel != 1) {
-      const previousLevelDetails = powerUp.levelAmount.find(
+      const previousLevelDetails = cardData.levelAmount.find(
         (l) => l.level === nextLevel - 1
       );
 

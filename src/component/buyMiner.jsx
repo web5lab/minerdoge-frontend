@@ -2,23 +2,24 @@ import React from "react";
 import { IoCloseCircle } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { closeBottomSheet } from "../App/features/gameSlice";
-import { buyBoosterApi, buyMinerApi } from "../App/features/gameAction";
-import { tgDataSelector } from "../selector/globalSelector";
+import {  buyMinerApi } from "../App/features/gameAction";
+import { loaderSelector, tgDataSelector } from "../selector/globalSelector";
 
-function BuyMiner({ logo, tittle, miningRate, amount, btnTxt, enabled, id }) {
+function BuyMiner({ logo, tittle, miningRate, amount, btnTxt,  id }) {
   const dispatch = useDispatch();
   const tg = useSelector(tgDataSelector);
-  
+  const loading = useSelector(loaderSelector);
+
   const closeSheet = () => {
     dispatch(closeBottomSheet());
   };
   const buyMinerFn = () => {
     const obj = {
       tgData: tg,
-      minerId:id
+      minerId: id,
     };
-    dispatch(buyMinerApi(obj))
-  }
+    dispatch(buyMinerApi(obj));
+  };
   return (
     <div className="w-full h-full max-h-minus-60 flex  flex-col items-center justify-center">
       <div className="w-full flex justify-end ">
@@ -56,11 +57,20 @@ function BuyMiner({ logo, tittle, miningRate, amount, btnTxt, enabled, id }) {
             </div>
           </div>
           <button
-            enabled={enabled}
+            disabled={loading}
             onClick={buyMinerFn}
-            className="w-full rounded-full font-semibold bg-white text-black p-4"
+            className={`w-full rounded-full font-semibold p-4 flex items-center justify-center ${
+              loading ? "bg-gray-400" : "bg-white text-black"
+            }`}
           >
-            {btnTxt}
+            {loading ? (
+              <div className="flex justify-center items-center gap-4">
+                Please wait ..
+                <div className="w-6 h-6 border-4 border-t-transparent border-white rounded-full animate-spin"></div>
+              </div>
+            ) : (
+              { btnTxt }
+            )}
           </button>
         </div>
       </div>

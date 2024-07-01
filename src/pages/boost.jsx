@@ -7,7 +7,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { getBoosters } from "../App/features/gameAction";
 import { FaChevronRight } from "react-icons/fa";
-import { formatNumber } from "../utils";
+
 import BuyBooster from "../component/buyBooster";
 import { openBottomSheet } from "../App/features/gameSlice";
 

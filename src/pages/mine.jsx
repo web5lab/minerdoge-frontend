@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { FaAnglesRight } from "react-icons/fa6";
+
 import { getMiningCards } from "../App/features/gameAction";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -62,8 +62,22 @@ function Mine() {
       nextRank -= 1;
       maxed = true;
     }
+
+    let hashAdded;
+
+    if (nextLevel != 1) {
+      const previousLevelDetails = powerUp.levelAmount.find(
+        (l) => l.level === nextLevel - 1
+      );
+
+      hashAdded = levelDetails.miningRate - previousLevelDetails.miningRate;
+    }
+    if (nextLevel === 1) {
+      hashAdded = levelDetails.miningRate;
+    }
     return {
       nextRank: nextRank,
+      hash:hashAdded,
       nextAmount: levelDetails?.buyingPrice,
       maxed: maxed,
     };
@@ -108,8 +122,8 @@ function Mine() {
                 openBuySection(
                   data?.imgUrl,
                   data?.name,
-                  10,
-                  500,
+                  getCardInfo(data?.id, data).hash,
+                  getCardInfo(data?.id, data).nextAmount,
                   "buy",
                   true,
                   data?.id

@@ -36,6 +36,7 @@ const initialState = {
   minerNotification: null,
   tgData: null,
   user: null,
+  loader:false
 };
 
 const gameController = createSlice({
@@ -87,13 +88,16 @@ const gameController = createSlice({
         state.user.currentNetwork = action.payload?.data;
       });
     builder
-      .addCase(buyMinerApi.pending, (state) => {})
+      .addCase(buyMinerApi.pending, (state) => {
+        state.loader = true;
+      })
       .addCase(buyMinerApi.rejected, (state, action) => {
-
+        state.loader = false;
         state.bottomSheetEnabled = false;
         state.bottomSheet = null;
       })
       .addCase(buyMinerApi.fulfilled, (state, action) => {
+        state.loader = false;
         state.miningRate += action.payload?.hashAdded;
         state.user.MiningRatePerHour += action.payload?.hashAdded;
         state.user.Balance -= action.payload?.balanceToDeduct;
@@ -139,8 +143,14 @@ const gameController = createSlice({
         state.booster = action.payload?.data;
       });
     builder
-      .addCase(DailyLoginApi.pending, (state) => {})
-      .addCase(DailyLoginApi.rejected, (state) => {})
+      .addCase(DailyLoginApi.pending, (state) => {
+        state.loader = true;
+      })
+      .addCase(DailyLoginApi.rejected, (state) => {
+        state.loader = false;
+        state.bottomSheetEnabled = false;
+        state.bottomSheet = null;
+      })
       .addCase(DailyLoginApi.fulfilled, (state ,action) => {
         state.user.Balance += action.payload?.balanceToAdd;
         state.coins += action.payload?.balanceToAdd;
@@ -151,13 +161,16 @@ const gameController = createSlice({
         state.bottomSheet = null;
       });
     builder
-      .addCase(buyBoosterApi.pending, (state) => {})
+      .addCase(buyBoosterApi.pending, (state) => {
+        state.loader = true;
+      })
       .addCase(buyBoosterApi.rejected, (state, action) => {
-
+        state.loader = false;
         state.bottomSheetEnabled = false;
         state.bottomSheet = null;
       })
       .addCase(buyBoosterApi.fulfilled, (state, action) => {
+        state.loader = false;
         const type = action.payload?.type;
         const buff = action.payload?.buffIncrement;
         state.user.boosterCrads = action.payload?.userCard;

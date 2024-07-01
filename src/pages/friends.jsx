@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { FaAnglesRight } from "react-icons/fa6";
+
 import toast from "react-hot-toast";
 import { FaRegCopy } from "react-icons/fa";
 import {
@@ -13,7 +13,7 @@ import { getFriends } from "../App/features/gameAction";
 import { formatNumber } from "../utils";
 import { useNavigate } from "react-router-dom";
 
-const networks = [1, 2, 3];
+
 
 function Friends() {
   const friends = useSelector(friendsSelector);

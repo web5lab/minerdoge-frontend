@@ -2,7 +2,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:3137/",
+  baseURL: "https://api.minerdoge.fun/",
 });
 
 axiosInstance.interceptors.response.use(
@@ -24,7 +24,7 @@ const successMessage = function (config) {
 const errorFunction = function (error) {
   const message = error?.response?.data?.message;
   if (message) {
-toast.error(message)
+    toast.error(message);
   }
   throw error;
 };

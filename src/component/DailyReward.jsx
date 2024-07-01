@@ -5,12 +5,14 @@ import { DailyLoginApi, getDailyReward } from "../App/features/gameAction";
 import {
   dailyRewardDataSelector,
   dailyRewardSelector,
+  loaderSelector,
   tgDataSelector,
 } from "../selector/globalSelector";
 import { formatNumber } from "../utils";
 import { closeBottomSheet } from "../App/features/gameSlice";
 
 function DailyReward() {
+  const loading = useSelector(loaderSelector);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getDailyReward());
@@ -25,7 +27,7 @@ function DailyReward() {
     const obj = {
       tgData: tg,
     };
-    dispatch(DailyLoginApi());
+    dispatch(DailyLoginApi(obj));
   };
   return (
     <div className="w-full h-full max-h-minus-60 flex  flex-col items-center justify-center">
@@ -66,16 +68,30 @@ function DailyReward() {
               </button>
             ))}
           </div>
+         
           <button
             className={` ${
               userData?.claimed
                 ? "text-white bg-black border-2"
-                : "bg-white text-black"
+                : `${loading ? "bg-gray-400" : "bg-white text-black"}`
             } mt-4 rounded-full font-semibold  p-4`}
-            disabled={userData?.claimed}
+            disabled={userData?.claimed || loading}
             onClick={collectReward}
           >
-            {userData?.claimed ? "Come back tommorow" : "Collect"}
+            {userData?.claimed ? (
+              "Come back tommorow"
+            ) : (
+              <>
+                {loading ? (
+                  <div className="flex justify-center items-center gap-4">
+                    Please wait ..
+                    <div className="w-6 h-6 border-4 border-t-transparent border-white rounded-full animate-spin"></div>
+                  </div>
+                ) : (
+                  "Collect"
+                )}
+              </>
+            )}
           </button>
         </div>
       </div>

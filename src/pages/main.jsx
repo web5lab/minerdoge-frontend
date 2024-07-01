@@ -4,7 +4,6 @@ import { GiElectric } from "react-icons/gi";
 import { RxRocket } from "react-icons/rx";
 import { useNavigate } from "react-router-dom";
 import { formatNumber, getCoinPercentage } from "../utils";
-import DailyReward from "../component/DailyReward";
 import MinersNotification from "../component/MinersNotification";
 import { useDispatch, useSelector } from "react-redux";
 import { addClicks, loginApi } from "../App/features/gameAction";
@@ -41,18 +40,17 @@ function Main() {
   const network = useSelector(networkSelector);
   const recharge = useSelector(rechargeSelector);
   const tg = useSelector(tgDataSelector);
-  const miningNotification = useSelector(miningNotificationSelector)
-
-  const openBottom = () => {
-    dispatch(openBottomSheet(<DailyReward />));
-  };
+  const miningNotification = useSelector(miningNotificationSelector);
 
   useEffect(() => {
-   if(miningNotification){
-dispatch(openBottomSheet(<MinersNotification amount={miningNotification?.amount}/>))
-   }
-  }, [])
-  
+    if (miningNotification) {
+      dispatch(
+        openBottomSheet(
+          <MinersNotification amount={miningNotification?.amount} />
+        )
+      );
+    }
+  }, []);
 
   useEffect(() => {
     if (recharge < user?.rechargeLimit) {
@@ -172,7 +170,9 @@ dispatch(openBottomSheet(<MinersNotification amount={miningNotification?.amount}
       </div>
       <div className="px-auto mb-auto mt-3 h-full border-t-2 border-[#f3b15b] cs-shadow flex-col flex justify-between  rounded-2xl w-full">
         <div className="grid mt-4 grid-cols-3 gap-2 px-2">
-          <button className=" rounded-lg bg-gray-700">
+          <button className=" rounded-lg bg-gray-700" onClick={() => {
+            navigation("/boost");
+          }}>
             <span className=" text-xs text-[#f3b15b]">Earn Per Tap</span>
             <div className="flex gap-1 justify-center items-center">
               <img
@@ -199,7 +199,9 @@ dispatch(openBottomSheet(<MinersNotification amount={miningNotification?.amount}
               </span>
             </div>
           </button>
-          <button className=" rounded-lg bg-gray-700" onClick={openBottom}>
+          <button className=" rounded-lg bg-gray-700" onClick={() => {
+            navigation("/mine");
+          }}>
             <span className=" text-xs text-[#5b72f3]">Mining per hour</span>
             <div className="flex gap-1 justify-center items-center">
               <img

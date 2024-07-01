@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { getNetwork, rankLeaderBoardApi } from "../App/features/gameAction";
+import {  rankLeaderBoardApi } from "../App/features/gameAction";
 import { leaderBoardSelector, RankSelector } from "../selector/globalSelector";
 import { formatNumber } from "../utils";
 function RanksPage() {
@@ -65,7 +65,7 @@ function RanksPage() {
                 <span className="mr-auto">{l?.name}</span>
                 <div className="flex gap-1 justify-start items-center">
                   <img className=" h-4 w-4 rounded-full" src="hashcoin.jpeg" />
-                  <span>{Number(l?.totalEarning).toLocaleString()}</span>
+                  <span>{Number(l?.Balance).toLocaleString()}</span>
                 </div>
               </div>
 

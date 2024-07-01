@@ -1,10 +1,9 @@
 import React, { useEffect } from "react";
 import { router } from "./Router";
-
 import { RouterProvider } from "react-router-dom";
 import { changeCoin } from "./App/features/gameSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { miningRateSelector, userSelector } from "./selector/globalSelector";
+import { miningRateSelector } from "./selector/globalSelector";
 
 function MainApp() {
   const dispatch = useDispatch();

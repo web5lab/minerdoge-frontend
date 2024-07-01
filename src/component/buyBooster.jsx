@@ -1,7 +1,11 @@
 import React from "react";
 import { IoCloseCircle } from "react-icons/io5";
-import { formatNumber } from "../utils";
-import { bottomSheetSelector, tgDataSelector } from "../selector/globalSelector";
+
+import {
+
+  loaderSelector,
+  tgDataSelector,
+} from "../selector/globalSelector";
 import { closeBottomSheet } from "../App/features/gameSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { buyBoosterApi } from "../App/features/gameAction";
@@ -11,11 +15,10 @@ function BuyBooster({
   tittle,
   subtitle,
   amount,
-  btnTxt,
-  enabled,
   bufDetail,
-  id
+  id,
 }) {
+  const loading = useSelector(loaderSelector);
   const tg = useSelector(tgDataSelector);
   const dispatch = useDispatch();
   const closeSheet = () => {
@@ -25,10 +28,10 @@ function BuyBooster({
   const buyBoosterFn = () => {
     const obj = {
       tgData: tg,
-      boosterId:id
+      boosterId: id,
     };
-    dispatch(buyBoosterApi(obj))
-  }
+    dispatch(buyBoosterApi(obj));
+  };
   return (
     <div className="w-full h-full max-h-minus-60 flex  flex-col items-center justify-center">
       <div className="w-full flex justify-end ">
@@ -56,8 +59,21 @@ function BuyBooster({
               {Number(amount).toLocaleString()}
             </div>
           </div>
-          <button enabled={enabled} onClick={buyBoosterFn} className="w-full rounded-full font-semibold bg-white text-black p-4">
-            {btnTxt}
+          <button
+            disabled={loading}
+            onClick={buyBoosterFn}
+            className={`w-full rounded-full font-semibold p-4 flex items-center justify-center ${
+              loading ? "bg-gray-400" : "bg-white text-black"
+            }`}
+          >
+            {loading ? (
+              <div className="flex justify-center items-center gap-4">
+                Please wait ..
+                <div className="w-6 h-6 border-4 border-t-transparent border-white rounded-full animate-spin"></div>
+              </div>
+            ) : (
+              "Buy Booster"
+            )}
           </button>
         </div>
       </div>

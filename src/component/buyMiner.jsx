@@ -5,7 +5,7 @@ import { closeBottomSheet } from "../App/features/gameSlice";
 import {  buyMinerApi } from "../App/features/gameAction";
 import { loaderSelector, tgDataSelector } from "../selector/globalSelector";
 
-function BuyMiner({ logo, tittle, miningRate, amount, btnTxt,  id }) {
+function BuyMiner({ logo, tittle, miningRate, amount,  id }) {
   const dispatch = useDispatch();
   const tg = useSelector(tgDataSelector);
   const loading = useSelector(loaderSelector);
@@ -69,7 +69,7 @@ function BuyMiner({ logo, tittle, miningRate, amount, btnTxt,  id }) {
                 <div className="w-6 h-6 border-4 border-t-transparent border-white rounded-full animate-spin"></div>
               </div>
             ) : (
-              { btnTxt }
+             "Buy Now"
             )}
           </button>
         </div>

@@ -43,7 +43,7 @@ function Task() {
 
   const completeTask = (url, id, type, requiremnet) => {
     if (type === "refral") {
-      if (friends?.referralCount < requiremnet + 1) {
+      if (friends?.referralCount < requiremnet ) {
         toast.error(
           `need ${requiremnet - friends?.referralCount} more refrals`
         );

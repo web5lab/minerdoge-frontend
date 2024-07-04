@@ -94,8 +94,9 @@ function Main() {
   };
 
   const handleClick = (e) => {
-    if (recharge === 0) {
+    if (recharge < 0) {
       toast.error("insufficient recharge point");
+      return
     }
     clickApiCaller();
     dispatch(changeRecharge(-1));

@@ -28,7 +28,7 @@ function Mine() {
     tittle,
     miningRate,
     amount,
-    btnTxt,
+
     enabled,
     id
   ) => {
@@ -39,7 +39,6 @@ function Mine() {
           tittle={tittle}
           miningRate={miningRate}
           amount={amount}
-          btnTxt={btnTxt}
           enabled={enabled}
           id={id}
         />
@@ -124,7 +123,6 @@ function Mine() {
                   data?.name,
                   getCardInfo(data?.id, data).hash,
                   getCardInfo(data?.id, data).nextAmount,
-                  "buy",
                   true,
                   data?.id
                 );

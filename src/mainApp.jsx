@@ -8,25 +8,34 @@ import { miningRateSelector } from "./selector/globalSelector";
 function MainApp() {
   const dispatch = useDispatch();
   const mining_Rate = useSelector(miningRateSelector);
+
   useEffect(() => {
-    if (mining_Rate != 0) {
+    let intervalId;
+
+    if (mining_Rate !== 0) {
       startMining(mining_Rate);
     }
-  }, [mining_Rate]);
 
-  const startMining = (miningRate) => {
-    let interval = 1000;
-    let pointsPerInterval = 1;
-    if (miningRate > 3600) {
-      pointsPerInterval = miningRate / 3600;
-    } else if (miningRate < 3600) {
-      interval = Math.floor((3600 / miningRate) * 1000);
+    function startMining(miningRate) {
+      let interval = 1000;
+      let pointsPerInterval = 1;
+
+      if (miningRate > 3600) {
+        pointsPerInterval = miningRate / 3600;
+      } else if (miningRate < 3600) {
+        interval = Math.floor((3600 / miningRate) * 1000);
+      }
+
+      intervalId = setInterval(() => {
+        dispatch(changeCoin(pointsPerInterval));
+      }, interval);
     }
 
-    setInterval(() => {
-      dispatch(changeCoin(pointsPerInterval));
-    }, interval);
-  };
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [mining_Rate]);
+
   return (
     <>
       <RouterProvider router={router} />

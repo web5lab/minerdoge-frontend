@@ -109,6 +109,32 @@ function Task() {
               onClick={openDailyLogin}
             >
               <img
+                src="secret.jpeg"
+                className="w-10 h-10  rounded-md  bg-black "
+                alt="Diamond"
+              />
+              <div className="flex mr-auto flex-col">
+                <h1 className=" text-left w-full text-yellow-400 font-semibold">
+                  Secret code
+                </h1>
+                <div className="flex gap-2 justify-start items-center">
+                  <img
+                    src="hashcoin.jpeg"
+                    className="w-6 h-6  rounded-full "
+                    alt="Diamond"
+                  />
+                  <span className=" text-xs font-extrabold text-white">
+                    1,00,000
+                  </span>
+                </div>
+              </div>
+              <FaAnglesRight />
+            </button>
+            <button
+              className="w-full gap-4 py-2 my-2 bg-gray-700 text-white px-4 rounded-lg flex justify-between items-center"
+              onClick={openDailyLogin}
+            >
+              <img
                 src="calender.png"
                 className="w-10 h-10  rounded-md  bg-black "
                 alt="Diamond"

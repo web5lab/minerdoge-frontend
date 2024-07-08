@@ -35,7 +35,7 @@ function BottomNav() {
           }}
         >
           <GiTwoCoins className="mx-auto text-xl" />
-          <span className="  text-xs">Earn</span>
+          <span className="  text-xs">Task</span>
         </button>
         <button
           className="hover:bg-gray-700  flex-col justify-center items-center rounded-md"

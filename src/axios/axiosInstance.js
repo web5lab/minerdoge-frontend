@@ -2,7 +2,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 const axiosInstance = axios.create({
-  baseURL: "https://api.minerdoge.fun/",
+  baseURL: "http://localhost:3138/",
 });
 
 axiosInstance.interceptors.response.use(

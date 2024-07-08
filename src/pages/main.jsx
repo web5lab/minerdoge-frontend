@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { formatNumber, getCoinPercentage } from "../utils";
 import MinersNotification from "../component/MinersNotification";
 import { useDispatch, useSelector } from "react-redux";
-import { addClicks, loginApi } from "../App/features/gameAction";
+import { addClicks } from "../App/features/gameAction";
 import { FaChevronRight } from "react-icons/fa";
 import {
   coinSelector,

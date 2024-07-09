@@ -10,11 +10,14 @@ import { addClicks } from "../App/features/gameAction";
 import { FaChevronRight } from "react-icons/fa";
 import {
   coinSelector,
+  dailyNotificationSelector,
+  dailyRewardDataSelector,
   miningNotificationSelector,
   miningRateSelector,
   networkSelector,
   RankSelector,
   rechargeSelector,
+  referalNotificationSelector,
   tgDataSelector,
   userSelector,
 } from "../selector/globalSelector";
@@ -24,6 +27,8 @@ import {
   openBottomSheet,
 } from "../App/features/gameSlice";
 import toast from "react-hot-toast";
+import ReferNotifiaction from "../component/ReferNotifiaction";
+import DailyReward from "../component/DailyReward";
 
 function Main() {
   const [points, setPoints] = useState([]);
@@ -41,16 +46,28 @@ function Main() {
   const recharge = useSelector(rechargeSelector);
   const tg = useSelector(tgDataSelector);
   const miningNotification = useSelector(miningNotificationSelector);
+  const dailyNotification = useSelector(dailyNotificationSelector);
+  const refralNotification = useSelector(referalNotificationSelector);
+  const userData = useSelector(dailyRewardDataSelector);
 
   useEffect(() => {
+    if (!dailyNotification && !userData?.claimed) {
+      dispatch(openBottomSheet(<DailyReward />));
+      return;
+    }
     if (miningNotification) {
       dispatch(
         openBottomSheet(
           <MinersNotification amount={miningNotification?.amount} />
         )
       );
+      return;
     }
-  }, []);
+    if (!refralNotification) {
+      dispatch(openBottomSheet(<ReferNotifiaction />));
+      return;
+    }
+  }, [miningNotification, dailyNotification, refralNotification]);
 
   useEffect(() => {
     if (recharge < user?.rechargeLimit) {
@@ -96,7 +113,7 @@ function Main() {
   const handleClick = (e) => {
     if (recharge < 0) {
       toast.error("insufficient recharge point");
-      return
+      return;
     }
     clickApiCaller();
     dispatch(changeRecharge(-1));
@@ -144,7 +161,7 @@ function Main() {
   };
 
   return (
-    <div className="flex flex-col  h-full shadow-inner  justify-between items-center flex-grow">
+    <div className="flex flex-col max-h-minus-60 h-full shadow-inner  justify-between items-center flex-grow">
       <div className="flex items-center z-50 w-full justify-between px-6 space-x-2 mt-4">
         <div className="flex justify-center items-center gap-2">
           <img
@@ -171,9 +188,12 @@ function Main() {
       </div>
       <div className="px-auto mb-auto mt-3 h-full border-t-2 border-[#f3b15b] cs-shadow flex-col flex justify-between  rounded-2xl w-full">
         <div className="grid mt-4 grid-cols-3 gap-2 px-2">
-          <button className=" rounded-lg bg-gray-700" onClick={() => {
-            navigation("/boost");
-          }}>
+          <button
+            className=" rounded-lg bg-gray-700"
+            onClick={() => {
+              navigation("/boost");
+            }}
+          >
             <span className=" text-xs text-[#f3b15b]">Earn Per Tap</span>
             <div className="flex gap-1 justify-center items-center">
               <img
@@ -200,9 +220,12 @@ function Main() {
               </span>
             </div>
           </button>
-          <button className=" rounded-lg bg-gray-700" onClick={() => {
-            navigation("/mine");
-          }}>
+          <button
+            className=" rounded-lg bg-gray-700"
+            onClick={() => {
+              navigation("/mine");
+            }}
+          >
             <span className=" text-xs text-[#5b72f3]">Mining per hour</span>
             <div className="flex gap-1 justify-center items-center">
               <img

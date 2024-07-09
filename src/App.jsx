@@ -4,7 +4,7 @@ import "./tailwind.css";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { userSelector } from "./selector/globalSelector";
-import { getNetwork, getRanks, loginApi } from "./App/features/gameAction";
+import { getNetwork, getRanks, getSecretCode, loginApi } from "./App/features/gameAction";
 import MainApp from "./mainApp";
 import { setTgdata } from "./App/features/gameSlice";
 
@@ -28,6 +28,7 @@ export default function App() {
       dispatch(loginApi(obj));
       dispatch(getRanks());
       dispatch(getNetwork());
+      dispatch(getSecretCode());
     }
   }, []);
 

@@ -4,12 +4,13 @@ import { PiGameControllerFill } from "react-icons/pi";
 import { FaUserFriends } from "react-icons/fa";
 import { GiTwoCoins } from "react-icons/gi";
 import { GiMining } from "react-icons/gi";
+import { FaWallet } from "react-icons/fa";
 
 function BottomNav() {
   const navigation = useNavigate();
   return (
     <div className=" w-full mt-auto">
-      <div className="grid grid-cols-4 gap-2 px-2 w-full bg-gray-800 py-2">
+      <div className="grid grid-cols-5 gap-2 px-2 w-full bg-gray-800 py-2">
         <button
           className=" hover:bg-gray-700 flex-col justify-center items-center rounded-md"
           onClick={() => {
@@ -45,6 +46,15 @@ function BottomNav() {
         >
           <FaUserFriends className="mx-auto text-xl" />
           <span className="  text-xs">Friend</span>
+        </button>
+        <button
+          className="hover:bg-gray-700  flex-col justify-center items-center rounded-md"
+          onClick={() => {
+            navigation("/wallet");
+          }}
+        >
+          <FaWallet className="mx-auto text-xl" />
+          <span className="  text-xs">Wallet</span>
         </button>
       </div>
     </div>

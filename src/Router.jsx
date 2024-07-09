@@ -8,6 +8,7 @@ import Boost from "./pages/boost";
 import Mine from "./pages/mine";
 import RanksPage from "./pages/ranksPage";
 import RefralRewards from "./pages/refralRewards";
+import Wallet from "./pages/Wallet";
 
 export const router = createBrowserRouter([
   {
@@ -45,6 +46,10 @@ export const router = createBrowserRouter([
       {
         path: "refralrewards",
         element: <RefralRewards />,
+      },
+      {
+        path: "wallet",
+        element: <Wallet />,
       }
     ],
   },

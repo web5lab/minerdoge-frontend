@@ -11,11 +11,11 @@ import {
   getMiningCards,
   getNetwork,
   getRanks,
+  getSecretCode,
   getTask,
   loginApi,
   rankLeaderBoardApi,
 } from "./gameAction";
-
 
 const initialState = {
   networks: [],
@@ -33,10 +33,13 @@ const initialState = {
   bottomSheet: null,
   bottomSheetEnabled: false,
   dailyRewardData: null,
+  secretCode: null,
   minerNotification: null,
   tgData: null,
   user: null,
-  loader:false
+  referalNotification: false,
+  dayNotification: false,
+  loader: false,
 };
 
 const gameController = createSlice({
@@ -53,6 +56,8 @@ const gameController = createSlice({
       state.minerNotification = null;
     },
     openBottomSheet: (state, action) => {
+      state.bottomSheet = null;
+      state.bottomSheetEnabled = false;
       state.bottomSheet = action.payload;
       state.bottomSheetEnabled = true;
     },
@@ -62,6 +67,15 @@ const gameController = createSlice({
     },
     setTgdata: (state, action) => {
       state.tgData = action.payload;
+    },
+    changeCurrentNotifiaction: (state, action) => {
+      const type = action.payload;
+      if (type === "daily") {
+        state.dayNotification = true;
+      }
+      if (type === "referal") {
+        state.referalNotification = true;
+      }
     },
   },
   extraReducers: (builder) => {
@@ -131,6 +145,12 @@ const gameController = createSlice({
         state.dailyRewards = action.payload?.data;
       });
     builder
+      .addCase(getSecretCode.pending, (state) => {})
+      .addCase(getSecretCode.rejected, (state, action) => {})
+      .addCase(getSecretCode.fulfilled, (state, action) => {
+        state.secretCode = action.payload?.data;
+      });
+    builder
       .addCase(getFriends.pending, (state) => {})
       .addCase(getFriends.rejected, (state, action) => {})
       .addCase(getFriends.fulfilled, (state, action) => {
@@ -151,7 +171,7 @@ const gameController = createSlice({
         state.bottomSheetEnabled = false;
         state.bottomSheet = null;
       })
-      .addCase(DailyLoginApi.fulfilled, (state ,action) => {
+      .addCase(DailyLoginApi.fulfilled, (state, action) => {
         state.user.Balance += action.payload?.balanceToAdd;
         state.coins += action.payload?.balanceToAdd;
         state.dailyRewardData.rewardStreak = 0;
@@ -216,6 +236,7 @@ export const {
   setTgdata,
   closeBottomSheet,
   changeRecharge,
-  closeMiningNotification
+  closeMiningNotification,
+  changeCurrentNotifiaction
 } = gameController.actions;
 export default gameController.reducer;

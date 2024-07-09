@@ -80,6 +80,21 @@ export const getDailyReward = createAsyncThunk(
   }
 );
 
+export const getSecretCode = createAsyncThunk(
+  "game/getSecretCode",
+  async () => {
+    try {
+      const Response = await axiosInstance.get(`/bot/secretCode`);
+      // console.log("api data", Response);
+      return Response.data;
+    } catch (err) {
+      if (err) {
+        throw err;
+      }
+    }
+  }
+);
+
 export const loginApi = createAsyncThunk("game/login", async (obj) => {
   try {
     const Response = await axiosInstance.post("/bot/login", obj);
@@ -94,6 +109,17 @@ export const loginApi = createAsyncThunk("game/login", async (obj) => {
 export const addClicks = createAsyncThunk("game/addClicks", async (obj) => {
   try {
     const Response = await axiosInstance.post("/bot/clicks", obj);
+    return Response.data;
+  } catch (err) {
+    if (err) {
+      throw err;
+    }
+  }
+});
+
+export const addSecretCodeReward = createAsyncThunk("game/addSecretCodeReward", async (obj) => {
+  try {
+    const Response = await axiosInstance.post("/bot/claimSecretReward", obj);
     return Response.data;
   } catch (err) {
     if (err) {

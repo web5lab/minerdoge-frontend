@@ -33,3 +33,29 @@ div::-webkit-scrollbar {
 .max-h-minus-60 {
     max-height: calc(100vh - 60px);
   }
+
+  :root {
+    --neon-blue: #ffbb00;
+    --neon-blue-light: #e6a100;
+  }
+  
+  .text-neon-blue {
+    color: var(--neon-blue);
+  }
+  
+  .border-neon-blue {
+    border-color: var(--neon-blue);
+  }
+  
+  .bg-neon-blue {
+    background-color: var(--neon-blue);
+  }
+  
+  .bg-neon-blue-light {
+    background-color: var(--neon-blue-light);
+  }
+  
+  .neon-box {
+    box-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue), 0 0 40px var(--neon-blue);
+  }
+  

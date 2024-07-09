@@ -9,7 +9,7 @@ import {
   tgDataSelector,
 } from "../selector/globalSelector";
 import { formatNumber } from "../utils";
-import { closeBottomSheet } from "../App/features/gameSlice";
+import { changeCurrentNotifiaction, closeBottomSheet } from "../App/features/gameSlice";
 
 function DailyReward() {
   const loading = useSelector(loaderSelector);
@@ -21,6 +21,7 @@ function DailyReward() {
   const userData = useSelector(dailyRewardDataSelector);
   const tg = useSelector(tgDataSelector);
   const closeSheet = () => {
+    dispatch(changeCurrentNotifiaction("daily"));
     dispatch(closeBottomSheet());
   };
   const collectReward = () => {
@@ -28,6 +29,7 @@ function DailyReward() {
       tgData: tg,
     };
     dispatch(DailyLoginApi(obj));
+    dispatch(changeCurrentNotifiaction("daily"));
   };
   return (
     <div className="w-full h-full max-h-minus-60 flex  flex-col items-center justify-center">

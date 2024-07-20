@@ -97,14 +97,14 @@ function Main() {
 
     // Set a new timeout
     const newTimeoutId = setTimeout(() => {
-      console.log("total clicks", count);
+      // console.log("total clicks", count);
       const obj = {
         tgData: tg,
         clicks: count + 1,
       };
       dispatch(addClicks(obj));
       setCount(0);
-      console.log("No clicks for 1 seconds");
+      // console.log("No clicks for 1 seconds");
     }, 1500);
 
     setTimeoutId(newTimeoutId);

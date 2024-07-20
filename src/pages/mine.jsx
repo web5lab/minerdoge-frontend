@@ -64,7 +64,8 @@ function Mine() {
 
     let hashAdded;
 
-    if (nextLevel != 1) {
+    if (nextLevel != 1 && !maxed) {
+      console.log("nxt",nextLevel);
       const previousLevelDetails = cardData.levelAmount.find(
         (l) => l.level === nextLevel - 1
       );

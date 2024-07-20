@@ -34,14 +34,14 @@ function ReferNotifiaction() {
         <div className="w-full grid gap-4">
           <div className="w-full flex flex-col justify-center items-center">
             <img className="bg-black mt-4 h-44" src="refer.jpeg" alt="refer" />
-            <div className="font-bold text-lg inline-block  max-w-[80%] text-center my-2">
-              Refer and Earn 1 Million Coins on Each Referral and Also
+            <div className="font-bold text-lg inline-block text-neon-blue  max-w-[80%] text-center my-2">
+              Refer and Earn 1,000,000 MinerDoge on Each Referral and Also
               Participate in a 100,000 Matic (Polygon) Token Airdrop
             </div>
           </div>
 
           <button
-            className="bg-gray-700 text-white w-full font-bold py-2 px-4 rounded-md hover:bg-neon-blue-light"
+            className="bg-gray-700 text-neon-blue border-yellow-400 border w-full font-bold py-2 px-4 rounded-md hover:bg-neon-blue-light"
             onClick={referaFriend}
           >
             Refer Now

@@ -9,7 +9,7 @@ import { FaWallet } from "react-icons/fa";
 function BottomNav() {
   const navigation = useNavigate();
   return (
-    <div className=" w-full mt-auto">
+    <div className=" z-50 w-full mt-auto">
       <div className="grid grid-cols-5 gap-2 px-2 w-full bg-gray-800 py-2">
         <button
           className=" hover:bg-gray-700 flex-col justify-center items-center rounded-md"

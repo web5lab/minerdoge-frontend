@@ -38,10 +38,10 @@ function SecretCode() {
     const enteredCode = code.join("");
     if (enteredCode.length === 4) {
       // Logic to crack the code and earn 1 million coins
-      console.log("Code entered:", enteredCode);
+      // console.log("Code entered:", enteredCode);
       setIsCodeCracked(true);
     } else {
-      console.log("Please enter a 4-digit code.");
+      // console.log("Please enter a 4-digit code.");
     }
   };
 

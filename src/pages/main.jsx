@@ -49,6 +49,7 @@ function Main() {
   const dailyNotification = useSelector(dailyNotificationSelector);
   const refralNotification = useSelector(referalNotificationSelector);
   const userData = useSelector(dailyRewardDataSelector);
+  const [activeTouches, setActiveTouches] = useState(new Set());
 
   useEffect(() => {
     if (!dailyNotification && !userData?.claimed) {
@@ -110,20 +111,23 @@ function Main() {
     setTimeoutId(newTimeoutId);
   };
 
-  const handleClick = (e) => {
+  const handleTouchStart = (e) => {
+    e.preventDefault();
+
     if (recharge < 0) {
       toast.error("insufficient recharge point");
       return;
     }
+
+    const touches = e.touches;
+    const newTouches = new Set(activeTouches);
     clickApiCaller();
-    dispatch(changeRecharge(-1));
+   
     setIsPushed(true);
     const button = e.currentTarget;
     const rect = button.getBoundingClientRect();
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-
-    dispatch(changeCoin(user?.earnPerclicks));
     const newRipple = {
       id: Date.now(),
       x: centerX,
@@ -131,15 +135,29 @@ function Main() {
       maxSize: rect.width * 2,
     };
 
-    const newPoint = {
-      id: Date.now(),
-      x: e.clientX - Math.random(1, 20) * 100,
-      y: e.clientY + Math.random(1, 20) * 40,
-      startY: e.clientY,
-    };
+    for (let i = 0; i < touches?.length; i++) {
+      const touchId = touches[i].identifier;
+      if (!newTouches.has(touchId)) {
+      dispatch(changeCoin(user?.earnPerclicks));
+      dispatch(changeRecharge(-1));
+      const newPoint = {
+        id: Date.now() + i,
+        x: touches[i].clientX - Math.random(1, 20) * 100,
+        y: touches[i].clientY + Math.random(1, 20) * 40,
+        startY: touches[i].clientY,
+      };
 
-    setPoints((prevPoints) => [...prevPoints, newPoint]);
+      setPoints((prevPoints) => [...prevPoints, newPoint]);
 
+      // Remove the point after 1 second
+      setTimeout(() => {
+        setPoints((prevPoints) =>
+          prevPoints.filter((point) => point.id !== newPoint.id)
+        );
+      }, 1000);
+      newTouches.add(touchId);
+      }
+    }
     setRipples((prevRipples) => [...prevRipples, newRipple]);
 
     setTimeout(() => {
@@ -147,17 +165,23 @@ function Main() {
         prevRipples.filter((ripple) => ripple.id !== newRipple.id)
       );
     }, 600);
-
-    // Remove the point after 1 second
-    setTimeout(() => {
-      setPoints((prevPoints) =>
-        prevPoints.filter((point) => point.id !== newPoint.id)
-      );
-    }, 1000);
-
     setTimeout(() => {
       setIsPushed(false);
     }, 100);
+    setActiveTouches(newTouches);             
+  };
+
+  const handleTouchEnd = (e) => {
+    e.preventDefault();
+    const endedTouches = e.changedTouches;
+    const newTouches = new Set(activeTouches);
+
+    for (let i = 0; i < endedTouches.length; i++) {
+      const touchId = endedTouches[i].identifier;
+      newTouches.delete(touchId);
+    }
+
+    setActiveTouches(newTouches);
   };
 
   return (
@@ -282,7 +306,11 @@ function Main() {
           <div className=" flex justify-center items-center mt-4">
             <button
               className="relative w-[72vw] max-w-80 max-h-80 h-[72vw]  rounded-full flex items-center justify-center"
-              onClick={handleClick}
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
+              onMouseDown={handleTouchStart}
+              onMouseUp={handleTouchEnd}
+  
             >
               <AnimatePresence>
                 {ripples.map((ripple) => (

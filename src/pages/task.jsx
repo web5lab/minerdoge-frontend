@@ -42,9 +42,9 @@ function Task() {
     dispatch(openBottomSheet(<DailyReward />));
   };
 
-  const completeTask = (url, id, type, requiremnet) => {
+  const completeTask = (url, id, type, requiremnet, completd) => {
     if (type === "refral") {
-      if (friends?.referralCount < requiremnet ) {
+      if (friends?.referralCount < requiremnet) {
         toast.error(
           `need ${requiremnet - friends?.referralCount} more refrals`
         );
@@ -58,11 +58,13 @@ function Task() {
       return;
     }
     window.open(`${url}`, "_blank");
-    const obj = {
-      tgData: tg,
-      taskId: id,
-    };
-    dispatch(completeTaskApi(obj));
+    if (!completd) {
+      const obj = {
+        tgData: tg,
+        taskId: id,
+      };
+      dispatch(completeTaskApi(obj));
+    }
   };
 
   return (
@@ -108,7 +110,7 @@ function Task() {
             <button
               className="w-full gap-4 py-2 my-2 bg-gray-700 text-white px-4 rounded-lg flex justify-between items-center"
               onClick={() => {
-                dispatch(openBottomSheet(<SecretCode/>))
+                dispatch(openBottomSheet(<SecretCode />));
               }}
             >
               <img
@@ -172,9 +174,13 @@ function Task() {
                       : " text-white"
                   }`}
                   onClick={() => {
-                    completeTask(data?.Url, data?.id);
+                    let completed = false;
+                    if (user.completedTask.includes(data?.id)) {
+                      completed = true;
+                    }
+                    completeTask(data?.Url, data?.id, null, null, completed);
                   }}
-                  disabled={user.completedTask.includes(data?.id)}
+                  // disabled={user.completedTask.includes(data?.id)}
                 >
                   <img
                     src={data?.imgUrl}

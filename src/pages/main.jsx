@@ -122,7 +122,7 @@ function Main() {
     const touches = e.touches;
     const newTouches = new Set(activeTouches);
     clickApiCaller();
-   
+
     setIsPushed(true);
     const button = e.currentTarget;
     const rect = button.getBoundingClientRect();
@@ -138,24 +138,24 @@ function Main() {
     for (let i = 0; i < touches?.length; i++) {
       const touchId = touches[i].identifier;
       if (!newTouches.has(touchId)) {
-      dispatch(changeCoin(user?.earnPerclicks));
-      dispatch(changeRecharge(-1));
-      const newPoint = {
-        id: Date.now() + i,
-        x: touches[i].clientX - Math.random(1, 20) * 100,
-        y: touches[i].clientY + Math.random(1, 20) * 40,
-        startY: touches[i].clientY,
-      };
+        dispatch(changeCoin(user?.earnPerclicks));
+        dispatch(changeRecharge(-1));
+        const newPoint = {
+          id: Date.now() + i,
+          x: touches[i].clientX - Math.random(1, 20) * 100,
+          y: touches[i].clientY + Math.random(1, 20) * 40,
+          startY: touches[i].clientY,
+        };
 
-      setPoints((prevPoints) => [...prevPoints, newPoint]);
+        setPoints((prevPoints) => [...prevPoints, newPoint]);
 
-      // Remove the point after 1 second
-      setTimeout(() => {
-        setPoints((prevPoints) =>
-          prevPoints.filter((point) => point.id !== newPoint.id)
-        );
-      }, 1000);
-      newTouches.add(touchId);
+        // Remove the point after 1 second
+        setTimeout(() => {
+          setPoints((prevPoints) =>
+            prevPoints.filter((point) => point.id !== newPoint.id)
+          );
+        }, 1000);
+        newTouches.add(touchId);
       }
     }
     setRipples((prevRipples) => [...prevRipples, newRipple]);
@@ -168,7 +168,7 @@ function Main() {
     setTimeout(() => {
       setIsPushed(false);
     }, 100);
-    setActiveTouches(newTouches);             
+    setActiveTouches(newTouches);
   };
 
   const handleTouchEnd = (e) => {
@@ -310,7 +310,6 @@ function Main() {
               onTouchEnd={handleTouchEnd}
               onMouseDown={handleTouchStart}
               onMouseUp={handleTouchEnd}
-  
             >
               <AnimatePresence>
                 {ripples.map((ripple) => (

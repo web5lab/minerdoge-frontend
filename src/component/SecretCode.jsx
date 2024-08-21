@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { loaderSelector } from "../selector/globalSelector";
 import { closeBottomSheet } from "../App/features/gameSlice";
+import toast from "react-hot-toast";
 
 function SecretCode() {
   const loading = useSelector(loaderSelector);
@@ -18,19 +19,28 @@ function SecretCode() {
   };
 
   const handleChange = (index, value) => {
-    if (/^\d*$/.test(value)) {
+    if (/^\d$/.test(value)) {  // Only allow a single digit
       const newCode = [...code];
       newCode[index] = value;
       setCode(newCode);
-      if (value && index < 3) {
+      if (index < 3) {
         inputRefs.current[index + 1].focus();
       }
     }
   };
 
   const handleKeyDown = (index, e) => {
-    if (e.key === "Backspace" && !code[index] && index > 0) {
-      inputRefs.current[index - 1].focus();
+    if (e.key === "Backspace") {
+      const newCode = [...code];
+      if (code[index] === "" && index > 0) {
+        inputRefs.current[index - 1].focus();
+      } else {
+        newCode[index] = "";
+        setCode(newCode);
+      }
+    }else if (e.key === "Enter") {
+      inputRefs.current[3].blur();
+      crackCode();
     }
   };
 
@@ -38,8 +48,8 @@ function SecretCode() {
     const enteredCode = code.join("");
     if (enteredCode.length === 4) {
       // Logic to crack the code and earn 1 million coins
-      // console.log("Code entered:", enteredCode);
-      setIsCodeCracked(true);
+      toast.error("incorrect code")
+      // setIsCodeCracked(true);
     } else {
       // console.log("Please enter a 4-digit code.");
     }
@@ -69,7 +79,7 @@ function SecretCode() {
             {code.map((digit, index) => (
               <input
                 key={index}
-                type="text"
+                type="tel"
                 value={digit}
                 onChange={(e) => handleChange(index, e.target.value)}
                 onKeyDown={(e) => handleKeyDown(index, e)}

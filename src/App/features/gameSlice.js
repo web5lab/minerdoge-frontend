@@ -172,6 +172,7 @@ const gameController = createSlice({
         state.bottomSheet = null;
       })
       .addCase(DailyLoginApi.fulfilled, (state, action) => {
+        state.loader = false;
         state.user.Balance += action.payload?.balanceToAdd;
         state.coins += action.payload?.balanceToAdd;
         state.dailyRewardData.rewardStreak = 0;
